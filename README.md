@@ -23,9 +23,9 @@ Esse projeto é uma aplicação web para propor um avanço nas reuniões da Câm
 
 ## Tecnologias
 
-- React
-- Node.js
-- SQLite
-- Next.js
+Para esse projeto iremos utilizar as seguintes tecnologias:
 
-
+- [React](https://react.dev/)
+- [Node.js](https://nodejs.org/en)
+- [SQLite](https://www.sqlite.org/index.html)
+- [Next.js](https://nextjs.org/)
