@@ -25,7 +25,6 @@ Esse projeto é uma aplicação web para propor um avanço nas reuniões da Câm
 
 Para esse projeto iremos utilizar as seguintes tecnologias:
 
-- [React](https://react.dev/)
-- [Node.js](https://nodejs.org/en)
-- [SQLite](https://www.sqlite.org/index.html)
-- [Next.js](https://nextjs.org/)
+- [Angular](https://angular.io/)
+- [Flask](https://flask.palletsprojects.com/en/2.3.x/)
+- [PostgreSQL](https://www.postgresql.org/)
