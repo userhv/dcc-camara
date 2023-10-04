@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 })
 
 export class ApiserviceService {
-  private url = 'http://127.0.0.1:5000/api/data'
+  private url = 'http://127.0.0.1:5000/'
 
   constructor(private http: HttpClient) { }
 
