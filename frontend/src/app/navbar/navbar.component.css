@@ -1,0 +1,39 @@
+.navbar {
+    background-color: #696F85;
+    color: #fff;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 0px 20px;
+  }
+  
+  .navbar-logo img {
+    max-width: 80%; /* Adjust the width as needed */
+    height: auto; /* Maintain the aspect ratio */
+    margin-right: 10%;
+  }
+  
+  .navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  
+  .nav-item {
+    margin-right: 20px;
+  }
+  
+  .nav-item:last-child {
+    margin-right: 0;
+  }
+  
+  .nav-item a {
+    color: #000;
+    text-decoration: none;
+  }
+  
+  .nav-item a.active {
+    font-weight: bold;
+  }
+  

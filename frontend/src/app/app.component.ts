@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiserviceService } from './service';
-
+import { NavbarComponent } from './navbar/navbar.component';
+import { FormsModule } from '@angular/forms';
 @Component({
-  selector: 'app-root',
+  selector: 'app-root',   
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  
 })
 
 export class AppComponent implements OnInit {
