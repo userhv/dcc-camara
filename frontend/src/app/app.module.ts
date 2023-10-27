@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CreateMeetingsComponent } from './create-meetings/create-meetings.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from  '@angular/common/http';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { HomeComponent } from './home/home.component';
-import { CreateMeetingsComponent } from './create-meetings/create-meetings.component';
 import { FormsModule } from '@angular/forms';
 import { JwtModule,JWT_OPTIONS} from '@auth0/angular-jwt';
 import { JwtHelperService} from '@auth0/angular-jwt'
@@ -36,15 +37,16 @@ AppComponent
   declarations: [
     AppComponent,
     LoginFormComponent, 
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
+    NgbModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,  
     FormsModule,
-    JwtModule
-   
+    JwtModule,
+    CreateMeetingsComponent
   ],
   providers: [ { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],

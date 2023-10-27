@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiserviceService } from './service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CreateMeetingsComponent } from './create-meetings/create-meetings.component';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',   
