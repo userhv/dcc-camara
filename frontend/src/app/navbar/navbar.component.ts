@@ -48,6 +48,7 @@ export class NavbarComponent   {
       }
     });
     this.token = localStorage.getItem('access_token')  // Get the token from localStorage
+    this.decodedToken = this.jwtHelper.decodeToken(this.token)
     // Decode the token
     if (this.token) {
       this.decodedToken = this.jwtHelper.decodeToken(this.token)
