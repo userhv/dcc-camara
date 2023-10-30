@@ -63,6 +63,7 @@ def login():
     data = request.get_json()
     username = data.get('nome')
     print(request)
+    print(data)
 
     if not username:
         return jsonify({'message': 'Username and password are required'}), 400
@@ -79,10 +80,9 @@ def login():
     user_id = user[0]
     user_type = user[1]
 
-    token = jwt.encode({'user_id': user_id, 'user_type': user_type},
-                       app.config['SECRET_KEY'], algorithm='HS256')
+    token = jwt.encode({'user_id': user_id, 'user_type': user_type}, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
-    return jsonify({'access_token': token,"user":user_id,"user_type":user_type})
+    return jsonify({'access_token': token, "user":user_id, "user_type":user_type})
 
 @app.route('/user',methods=['get'])
 def getUserInfo():

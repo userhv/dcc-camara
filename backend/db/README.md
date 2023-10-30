@@ -2,8 +2,14 @@
 
 Para criar o banco de dados local execute o codigo abaixo: 
 
+Para Linux:
 ```shell
-foo@bar:~$ sudo -iu postgres psql
+foo@bar:~$ sudo -iu postgres psql 
+```
+
+Para Windows:
+```shell
+foo@bar:~$ psql -U postgres
 ```
 
 ```shell
