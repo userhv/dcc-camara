@@ -1,10 +1,7 @@
 import psycopg2
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="camara_db",
-    user='admin',
-    password='123456')
+conn = psycopg2.connect(host="localhost",database="camara_db",user='admin',password="123456")
+
 
 # Open a cursor to perform database operations
 cur = conn.cursor()

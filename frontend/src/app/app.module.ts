@@ -26,10 +26,10 @@ export function jwtOptionsFactory(jwtHelper: JwtHelperService) {
   
     skipWhenExpired: true,
     debug: false,
-    errorHandler: (error: any) => {
-      // Handle token verification errors
-    },
-    secretOrKey: 'ydw9iqbZby', // Replace with your actual secret key
+    // errorHandler: (error: any) => {
+    //   // Handle token verification errors
+    // },
+    // secretOrKey: 'ydw9iqbZby', // Replace with your actual secret key
   };
 }
 AppComponent

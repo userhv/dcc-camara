@@ -2,9 +2,9 @@
     margin: 0;
     padding: 0;
     border: 0;
-    box-sizing: border-box; 
-    outline: none; 
-    background: none; 
+    width: 100vw;
+    height: 100vh;
+
   }
   
   ::ng-deep * {
@@ -12,3 +12,15 @@
     margin: 0;
     padding: 0;
   }
+
+  .app-root {
+    display: flex;
+    height: 100vh; /* 100% of the viewport height */
+  }
+  
+  .app-content {
+    display: flex;
+    width: 100%;
+    overflow: hidden; /* Hide overflow content */
+  }
+  

@@ -82,8 +82,17 @@ def login():
     token = jwt.encode({'user_id': user_id, 'user_type': user_type},
                        app.config['SECRET_KEY'], algorithm='HS256')
 
-    return jsonify({'access_token': token})
+    return jsonify({'access_token': token,"user":user_id,"user_type":user_type})
 
+@app.route('/user',methods=['get'])
+def getUserInfo():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    token = request.args.get('token')
+
+    decoded_token = jwt.decode( token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    print(decoded_token)
+    return jsonify({'username':decoded_token['user_id'],'role':decoded_token['user_type']})
 
 @app.route('/meetings', methods=['get'])
 def getAllMeetings():
@@ -93,7 +102,7 @@ def getAllMeetings():
 
     decoded_token = jwt.decode(
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
-    print(decoded_token)
+   
     data=[]
     #All meeting if a admin
     if(decoded_token['user_type'] == "Chefia"):
