@@ -45,6 +45,11 @@ cur.execute('INSERT INTO usuario (nome, role)'
             )
 cur.execute('INSERT INTO usuario (nome, role)'
             'VALUES (%s, %s)',
+            ('eu',
+             'Representante Discente')
+            )
+cur.execute('INSERT INTO usuario (nome, role)'
+            'VALUES (%s, %s)',
             ('Chefe',
              'Chefia')
             )

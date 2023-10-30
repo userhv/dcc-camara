@@ -3,7 +3,7 @@
     padding: 0;
     border: 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
 
   }
   
@@ -15,7 +15,7 @@
 
   .app-root {
     display: flex;
-    height: 100vh; /* 100% of the viewport height */
+    min-height: 100vh; /* 100% of the viewport height */
   }
   
   .app-content {

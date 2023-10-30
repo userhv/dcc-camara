@@ -6,10 +6,12 @@
     flex-direction: column;
     width: 20%;
     min-width: 300px;
-    height: 100%;
+    height: 100vh;
     align-items: center;
     padding: 0px 20px;
     padding-top: 10%;
+    position: fixed;
+    z-index: 2000;
   }
   
   .navbar-logo img {
@@ -30,10 +32,9 @@
   }
   /* Início */
 
-
-
   .nav-item {
-    margin-right: 50 auto
+    margin-left: 50 auto;
+    text-align: center;
   }
   
 

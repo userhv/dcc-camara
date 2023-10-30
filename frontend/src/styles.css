@@ -1,19 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
 .app {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    width: 100vw;
-    height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 
-  }
-.app-root{
-    margin: 0;
-    padding: 0;
-    border: 0;
-    width: 100vw;
-    height: 100vh;
+.app-root {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100vw;
+  min-height: 100vh;
 }
 
 @import '~bootstrap/dist/css/bootstrap.min.css';

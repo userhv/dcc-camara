@@ -49,10 +49,10 @@ AppComponent
     FormsModule,
     JwtModule,
     HomeAgendaComponent,
-    CreateMeetingsComponent
+    CreateMeetingsComponent,
   ],
   providers: [ { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],
-  bootstrap: [AppComponent]
-})
+    bootstrap: [AppComponent]
+  })
 export class AppModule { }
