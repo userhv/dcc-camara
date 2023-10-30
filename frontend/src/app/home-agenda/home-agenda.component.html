@@ -1,0 +1,59 @@
+<div class="agenda">
+    <div ngbAccordion [closeOthers]="true">
+        <h1>Próximas Reuniões</h1>
+        <hr class="dark-red">
+        <div ngbAccordionItem *ngFor="let meeting of upcomingMeetings">
+            <button ngbAccordionButton>
+                <h2>Reunião de {{ meeting.date }}</h2>
+            </button>
+            <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                    <ng-template>
+                        <div class="agenda-header">
+                            <h3>Pautas</h3>
+                            <button *ngIf="userType">Preferências</button>
+                        </div>
+                        <hr class="dark-red">
+                        <div class="agenda-list" *ngFor="let agenda of agendas">
+                            <ng-container *ngIf="meeting.id === agenda[1]">
+                                <div class="list">
+                                    <p>{{ agenda[0] }}</p>
+                                    <i class="bi bi-eye-fill"></i>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ngbAccordion [closeOthers]="true" style="margin-top: 40px;">
+        <h1>Reuniões Passadas</h1>
+        <hr class="dark-red">
+        <div ngbAccordionItem *ngFor="let meeting of pastMeetings">
+            <button ngbAccordionButton>
+                <h2>Reunião de {{ meeting.date }}</h2>
+            </button>
+            <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                    <ng-template>
+                        <div class="agenda-header">
+                            <h3>Pautas</h3>
+                            <button *ngIf="userType">Preferências</button>
+                        </div>
+                        <hr class="dark-red">
+                        <div class="agenda-list" *ngFor="let agenda of agendas">
+                            <ng-container *ngIf="meeting.id === agenda[1]">
+                                <div class="list">
+                                    <p>{{ agenda[0] }}</p>
+                                    <i class="bi bi-eye-fill"></i>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,10 @@
 import psycopg2
 
-conn = psycopg2.connect(host="localhost",database="camara_db",user='admin',password="123456")
-
+conn = psycopg2.connect(
+    host="localhost",
+    database="camara_db",
+    user='admin',
+    password='123456')
 
 # Open a cursor to perform database operations
 cur = conn.cursor()
@@ -57,7 +60,46 @@ cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
             ('Teste3',"2023-10-26")
             )
-
+cur.execute('INSERT INTO reuniao (titulo,date_added)'
+            'VALUES (%s, %s)',
+            ('Teste4',"2023-11-26")
+            )
+cur.execute('INSERT INTO reuniao (titulo,date_added)'
+            'VALUES (%s, %s)',
+            ('Teste5',"2023-11-26")
+            )
+cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
+            'VALUES (%s, %s)',
+            (1,3)
+            )
+cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
+            'VALUES (%s, %s)',
+            (1,4)
+            )
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
+            'VALUES (%s, %s, %s)',
+            ("Teste 1 de reuniao COM um Representante Discente",3,"Nome de documento muito importante")
+            )
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
+            'VALUES (%s, %s, %s)',
+            ("Teste 2 de reuniao COM um Representante Discente",3,"Outro documento muito importante")
+            )
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
+            'VALUES (%s, %s, %s)',
+            ("Teste 1 de reuniao SEM um Representante Discente",1,"DOCUMENTO.pdf")
+            )
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
+            'VALUES (%s, %s, %s)',
+            ("Teste 2 de reuniao SEM um Representante Discente",2,"Documento.pdf")
+            )
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
+            'VALUES (%s, %s, %s)',
+            ("Teste 3 de reuniao COM um Representante Discente",3,"Documento.pdf")
+            )
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
+            'VALUES (%s, %s, %s)',
+            ("Teste 3 de reuniao COM um Representante Discente",4,"Documento.pdf")
+            )
 
 
 conn.commit()

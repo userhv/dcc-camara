@@ -94,6 +94,45 @@ def getUserInfo():
     print(decoded_token)
     return jsonify({'username':decoded_token['user_id'],'role':decoded_token['user_type']})
 
+@app.route('/agenda', methods=['GET'])
+def getAllAgendas():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    token = request.args.get('token')
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    
+    user_id = decoded_token['user_id']  # Obtém o ID do usuário conectado
+
+    # Consulta SQL para obter os dados da agenda do usuário
+    if(decoded_token['user_type'] == "Chefia"):
+        cursor.execute('''
+            SELECT titulo, reuniao_id, documento
+            FROM pauta
+        ''')
+    else:
+        cursor.execute('''
+            SELECT titulo, reuniao_id, documento
+            FROM pauta
+            WHERE reuniao_id IN (
+                SELECT reuniao_id
+                FROM usuario_reuniao
+                WHERE usuario_id IN (
+                    SELECT ID 
+                    FROM usuario
+                    WHERE nome = %s
+                )
+            )
+        ''', (user_id,))
+    
+    data = cursor.fetchall()
+    
+    # Resto do seu código para mapear e retornar os dados
+    to_return = [list(i) for i in data]
+    print(to_return)
+    
+    return jsonify({'data': to_return})
+
 @app.route('/meetings', methods=['get'])
 def getAllMeetings():
     conn = get_db_connection()
