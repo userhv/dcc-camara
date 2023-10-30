@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { JwtModule,JWT_OPTIONS} from '@auth0/angular-jwt';
 import { JwtHelperService} from '@auth0/angular-jwt';
 import { HomeAgendaComponent } from './home-agenda/home-agenda.component';
+import { CreateAgendaComponent } from './create-agenda/create-agenda.component';
 
 
 export function jwtOptionsFactory(jwtHelper: JwtHelperService) {
@@ -40,6 +41,7 @@ AppComponent
     LoginFormComponent, 
     NavbarComponent,
     HomeComponent,
+    CreateAgendaComponent,
   ],
   imports: [
     NgbModule,
