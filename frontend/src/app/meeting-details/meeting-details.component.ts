@@ -39,6 +39,7 @@ export class MeetingDetailsComponent {
       next: (res) => {
         this.newAgenda = res;
         this.getAgendas();
+        console.log(this.agendas)
       },
       error: (err) => console.log(err)
     })
