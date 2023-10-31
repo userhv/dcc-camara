@@ -43,7 +43,6 @@ AppComponent
     LoginFormComponent, 
     NavbarComponent,
     HomeComponent,
-    CreateAgendaComponent,
     MeetingDetailsComponent,
     MeetingComponent,
   ],
@@ -56,6 +55,7 @@ AppComponent
     JwtModule,
     HomeAgendaComponent,
     CreateMeetingsComponent,
+    CreateAgendaComponent
   ],
   providers: [ { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],
