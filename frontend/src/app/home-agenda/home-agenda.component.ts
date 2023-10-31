@@ -4,12 +4,12 @@ import { ApiserviceFetch } from './home-agenda.component.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { format } from 'date-fns'; // Importe a função format de date-fns
 import { JwtHelperService } from '@auth0/angular-jwt';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'home-agenda',
   standalone: true,
-  imports: [NgbModule, CommonModule],
+  imports: [NgbModule, CommonModule, RouterModule],
   templateUrl: './home-agenda.component.html',
   styleUrls: ['./home-agenda.component.css']
 })

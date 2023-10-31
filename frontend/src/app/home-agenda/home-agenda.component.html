@@ -4,14 +4,14 @@
         <hr class="dark-red">
         <div ngbAccordionItem *ngFor="let meeting of upcomingMeetings">
             <button ngbAccordionButton>
-                <h2>Reunião de {{ meeting.date }}</h2>
+                <h2>REUNIÃO DE {{ meeting.date }}</h2>
             </button>
             <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
                     <ng-template>
                         <div class="agenda-header">
                             <h3>Pautas</h3>
-                            <button *ngIf="userType">Preferências</button>
+                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]">Preferências</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">
@@ -33,14 +33,14 @@
         <hr class="dark-red">
         <div ngbAccordionItem *ngFor="let meeting of pastMeetings">
             <button ngbAccordionButton>
-                <h2>Reunião de {{ meeting.date }}</h2>
+                <h2>REUNIÃO DE {{ meeting.date }}</h2>
             </button>
             <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
                     <ng-template>
                         <div class="agenda-header">
                             <h3>Pautas</h3>
-                            <button *ngIf="userType">Preferências</button>
+                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]">Preferências</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">

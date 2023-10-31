@@ -30,7 +30,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
   <ng-container *!ngIf="adminType">
   <button class="nav-item">
-  <a routerLink="" >Solicitar Pauta</a>
+  <a routerLink="">Solicitar Pauta</a>
   </button>
   </ng-container>
   
