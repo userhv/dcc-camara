@@ -10,21 +10,15 @@ export class ApiserviceFetch{
     private urlAgenda = 'http://127.0.0.1:5000/agenda'
   
     constructor(private http: HttpClient) { }
-  
       getdata() {
-        
         const params = new HttpParams()
-        .set('token',localStorage.getItem("access_token") as string)
-        
-  
-        return this.http.get(this.url,{params});
+        .set('token', localStorage.getItem("access_token") as string)
+        return this.http.get(this.url, {params});
       }
+
       getAgenda() {
         const params = new HttpParams()
-        .set('token',localStorage.getItem("access_token") as string)
-        
-  
-        return this.http.get(this.urlAgenda,{params});
+        .set('token', localStorage.getItem("access_token") as string)
+        return this.http.get(this.urlAgenda, {params});
       }
-  
   }

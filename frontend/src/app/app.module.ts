@@ -14,6 +14,8 @@ import { JwtModule,JWT_OPTIONS} from '@auth0/angular-jwt';
 import { JwtHelperService} from '@auth0/angular-jwt';
 import { HomeAgendaComponent } from './home-agenda/home-agenda.component';
 import { CreateAgendaComponent } from './create-agenda/create-agenda.component';
+import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
+import { MeetingComponent } from './meeting/meeting.component';
 
 
 export function jwtOptionsFactory(jwtHelper: JwtHelperService) {
@@ -42,6 +44,8 @@ AppComponent
     NavbarComponent,
     HomeComponent,
     CreateAgendaComponent,
+    MeetingDetailsComponent,
+    MeetingComponent,
   ],
   imports: [
     NgbModule,
