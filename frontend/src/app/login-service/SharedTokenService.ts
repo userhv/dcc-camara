@@ -11,7 +11,6 @@ export class SharedTokenService {
   token$ = this.tokenSubject.asObservable();
 
   updateToken(token: string) {
-
     this.tokenSubject.next(token);
   }
 }

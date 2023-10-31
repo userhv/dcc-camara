@@ -189,11 +189,13 @@ def postNewMeeting():
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
     date = data['date']
     title = data['title']
-    participants = data['participants']
+
+    participants = ["Discente", "eu", "Chefe"]
+
     # only create meeting if an admin requests it
     if(decoded_token['user_type'] == "Chefia"):
         # create meeting
-        cursor.execute('INSERT INTO reuniao (titulo,date_added)'
+        cursor.execute('INSERT INTO reuniao (titulo, date_added)'
                        'VALUES (%s, %s) RETURNING id',
                        (title, date))
         meeting_id = cursor.fetchone()[0]

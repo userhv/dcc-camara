@@ -17,20 +17,15 @@ export class LoginFormComponent {
   password: any
   token: any
   
-
-  constructor(private loginService: LoginService ,private router: Router, private sharedService: SharedTokenService) {}
+  constructor(private loginService: LoginService, private router: Router, private sharedService: SharedTokenService) {}
 
   login() {
     this.loginService.login(this.username, this.password).subscribe(
       (response:any) => {
-       
-       
-       
         localStorage.setItem('access_token', response.access_token as string);
 
         this.sharedService.updateToken(response.access_token);
         this.router.navigate(['/home'])
-      
       },
       (error) => {
         console.error('Login failed:', error);
