@@ -80,7 +80,7 @@ def login():
     user_id = user[0]
     user_type = user[1]
 
-    token = jwt.encode({'user_id': user_id, 'user_type': user_type}, app.config['SECRET_KEY'], algorithm='HS256')
+    token = jwt.encode({'user_id': user_id, 'user_type': user_type}, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     return jsonify({'access_token': token, "user":user_id, "user_type":user_type})
 
@@ -133,32 +133,6 @@ def getAllAgendas():
     
     return jsonify({'data': to_return})
 
-@app.route('/new_agenda', methods=['POST'])
-def postNewAgenda():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    data = request.get_json()
-    # extracting data from token
-    token = data['token']
-    decoded_token = jwt.decode(
-        token, app.config['SECRET_KEY'], algorithms=['HS256'])
-    title = data['title']
-    reunion_id = data['reunion_id']
-    document = data['document']
-
-    # only create meeting if an admin requests it
-    if(decoded_token['user_type'] == "Chefia"):
-        # create meeting
-        cursor.execute('INSERT INTO pauta (titulo, reuniao_id, documento)'
-                       'VALUES (%s, %s, %s) RETURNING id',
-                       (title, reunion_id, document))
-        id_pauta = cursor.fetchone()[0]
-
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return jsonify({"id_pauta": id_pauta, "reunion_id": reunion_id})
-
 @app.route('/meetings', methods=['get'])
 def getAllMeetings():
     conn = get_db_connection()
@@ -171,7 +145,7 @@ def getAllMeetings():
     data=[]
     #All meeting if a admin
     if(decoded_token['user_type'] == "Chefia"):
-        cursor.execute("SELECT * FROM reuniao ORDER BY date_added, id")
+        cursor.execute("SELECT * FROM reuniao")
         data = cursor.fetchall()
     #only fetch meetings a normal user is in
     if(decoded_token['user_type'] == "Representante Discente"):
@@ -188,8 +162,7 @@ def getAllMeetings():
         all_meetings = cursor.fetchall()
         all_meetings= [i[0] for i in all_meetings] 
         # Get full info from meetings from meetings ids
-        cursor.execute('''SELECT * from reuniao WHERE id in %s
-                          ORDER BY date_added, id''', (tuple(all_meetings),))
+        cursor.execute('SELECT * from reuniao WHERE id in %s', (tuple(all_meetings),))
         data= cursor.fetchall()
 
     #Now that we have the meetings we need to get the participants of those meetings
