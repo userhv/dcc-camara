@@ -81,6 +81,10 @@ cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
             'VALUES (%s, %s)',
             (1,4)
             )
+cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
+            'VALUES (%s, %s)',
+            (1,2)
+            )            
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
             ("Gráfico de Contributors",3,"\\assets\\Contributions.png")
