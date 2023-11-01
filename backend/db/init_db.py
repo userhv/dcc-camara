@@ -55,23 +55,23 @@ cur.execute('INSERT INTO usuario (nome, role)'
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
-            ('Teste1',"2023-10-26")
+            ('REUNIÃO DE 22/10/2023',"2023-10-22")
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
-            ('Teste2',"2023-10-26")
+            ('REUNIÃO DE 29/10/2023',"2023-10-29")
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
-            ('Teste3',"2023-10-26")
+            ('REUNIÃO DE 05/10/2023',"2023-10-05")
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
-            ('Teste4',"2023-11-26")
+            ('REUNIÃO DE 26/11/2023',"2023-11-26")
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
-            ('Teste5',"2023-11-26")
+            ('REUNIÃO DE 18/11/2023',"2023-11-18")
             )
 cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
             'VALUES (%s, %s)',
@@ -83,27 +83,27 @@ cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Teste 1 de reuniao COM um Representante Discente",3,"Nome de documento muito importante")
+            ("Nova disciplina Banco de Dados 2",3,"Nome de documento muito importante")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Teste 2 de reuniao COM um Representante Discente",3,"Outro documento muito importante")
+            ("DCC Week", 3,"Outro documento muito importante")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Teste 1 de reuniao SEM um Representante Discente",1,"DOCUMENTO.pdf")
+            ("Disciplina de Ciência de Dados",1,"DOCUMENTO.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Teste 2 de reuniao SEM um Representante Discente",2,"Documento.pdf")
+            ("Mudança no percurso curricular de Ciência da Computação",2,"Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Teste 3 de reuniao COM um Representante Discente",3,"Documento.pdf")
+            ("Matriz curricular comum para CC e SI",3,"Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Teste 3 de reuniao COM um Representante Discente",4,"Documento.pdf")
+            ("Mudança de horário de disciplinas",4,"Documento.pdf")
             )
 
 
