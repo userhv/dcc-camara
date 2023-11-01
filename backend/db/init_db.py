@@ -63,7 +63,7 @@ cur.execute('INSERT INTO reuniao (titulo,date_added)'
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
-            ('REUNIÃO DE 05/10/2023',"2023-10-05")
+            ('REUNIÃO DE 01/11/2023',"2023-11-02")
             )
 cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
@@ -83,7 +83,7 @@ cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Nova disciplina Banco de Dados 2",3,"\\assets\\Documento.pdf")
+            ("Gráfico de Contributors",3,"\\assets\\Contributions.png")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
