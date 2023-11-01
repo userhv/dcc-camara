@@ -29,7 +29,7 @@ export class CreateMeetingsComponent {
 
     this.createMeetingService.createMeeting(title, formatedDate, token).subscribe(
       (response:any) => {
-        this.router.navigate(['/meeting/' + response.reuniao_id])
+        this.router.navigate(['/meeting/' + response.id_reuniao])
       },
       (error) => {
         console.error('Create new meeting failed:', error);

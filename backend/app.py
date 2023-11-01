@@ -80,7 +80,7 @@ def login():
     user_id = user[0]
     user_type = user[1]
 
-    token = jwt.encode({'user_id': user_id, 'user_type': user_type}, app.config['SECRET_KEY'], algorithm='HS256')
+    token = jwt.encode({'user_id': user_id, 'user_type': user_type}, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     return jsonify({'access_token': token, "user":user_id, "user_type":user_type})
 
