@@ -11,7 +11,7 @@
                     <ng-template>
                         <div class="agenda-header">
                             <h3>Pautas</h3>
-                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]">Preferências</button>
+                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences">Preferências</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">
@@ -40,7 +40,7 @@
                     <ng-template>
                         <div class="agenda-header">
                             <h3>Pautas</h3>
-                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]">Preferências</button>
+                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences">Preferências</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">

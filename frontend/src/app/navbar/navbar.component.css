@@ -12,6 +12,19 @@
   padding-top: 10%;
   position: fixed;
   z-index: 2000;
+ 
+}
+
+.nav-bar * {
+  font-family: "Roboto", sans-serif;
+}
+
+h1.simple-text {
+  font-size: 30px;
+}
+
+p.role-text {
+  font-size: 20px;
 }
 
 .navbar-logo img {
@@ -66,11 +79,10 @@
 }
 
 .role-text {
-  height: 15%;
-  width: 70%;
   color: white;
   text-align: center;
   background-color: #C90019;
   border-radius: 10px;
   margin: 0 auto;
+  padding: 5px 30px;
 }

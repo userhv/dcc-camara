@@ -83,27 +83,27 @@ cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Nova disciplina Banco de Dados 2",3,"Nome de documento muito importante")
+            ("Nova disciplina Banco de Dados 2",3,"\\assets\\Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("DCC Week", 3,"Outro documento muito importante")
+            ("DCC Week", 3,"\\assets\\Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Disciplina de Ciência de Dados",1,"DOCUMENTO.pdf")
+            ("Disciplina de Ciência de Dados",1,"\\assets\\Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Mudança no percurso curricular de Ciência da Computação",2,"Documento.pdf")
+            ("Mudança no percurso curricular de Ciência da Computação",2,"\\assets\\Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Matriz curricular comum para CC e SI",3,"Documento.pdf")
+            ("Matriz curricular comum para CC e SI",3,"\\assets\\Documento.pdf")
             )
 cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
             'VALUES (%s, %s, %s)',
-            ("Mudança de horário de disciplinas",4,"Documento.pdf")
+            ("Mudança de horário de disciplinas",4,"\\assets\\Documento.pdf")
             )
 
 
