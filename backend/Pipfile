@@ -7,6 +7,10 @@ name = "pypi"
 flask = "*"
 flask-cors = "*"
 marshmallow = "*"
+flask-sqlalchemy = "*"
+psycopg2-binary = "*"
+flask-migrate = "*"
+flask-script = "*"
 
 [dev-packages]
 

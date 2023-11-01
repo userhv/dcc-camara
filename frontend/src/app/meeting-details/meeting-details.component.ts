@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { format } from 'date-fns'; // Importe a função format de date-fns
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ActivatedRoute } from '@angular/router';
+import { Meeting } from '../../meeting/meeting'
 
 @Component({
   selector: 'meeting-details',
@@ -47,22 +48,11 @@ export class MeetingDetailsComponent {
   }
 
   getMeeting(){
-    this.newdata.data.forEach((meeting: [any, any, any]) => {
-      const [id, title, dateStr] = meeting;
-      if(id == this.meeting_id){
-        this.meeting = meeting
-        return
-      }
-    })
+    this.meeting = Meeting.getMeetingWithID(this.newdata.data, this.meeting_id)
   }
 
   getAgendas(){
-    this.newAgenda.data.forEach((agendaData: [any, any, any]) => {
-      const [titulo, reuniao_id, documento] = agendaData;
-      if(reuniao_id == this.meeting_id){
-        this.agendas.push(agendaData)
-      }
-    })
+    this.agendas = Meeting.getAgendasWithMeetingID(this.newAgenda.data, this.meeting_id)
   }
 
   openPDF(content : string) {
