@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 20%;
+    margin-left: max(20%, 320px);
 }
 
 .home-agenda {

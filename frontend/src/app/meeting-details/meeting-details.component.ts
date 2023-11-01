@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css']
 })
+
 export class MeetingDetailsComponent {
   newdata: any;
   newAgenda: any;
