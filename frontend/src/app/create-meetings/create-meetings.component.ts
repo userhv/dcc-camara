@@ -26,7 +26,7 @@ export class CreateMeetingsComponent {
     const formatedDate = `${yyyy}-${mm}-${dd}`
 
     const token = localStorage.getItem('access_token') || "";
-    
+
     this.createMeetingService.createMeeting(title, formatedDate, token).subscribe(
       (response:any) => {
         this.router.navigate(['/meeting/' + response.id_reuniao])

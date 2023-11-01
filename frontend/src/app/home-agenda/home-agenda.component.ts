@@ -89,4 +89,8 @@ export class HomeAgendaComponent implements OnInit {
 
     console.log(this.agendas)
   }
+
+  openPDF(content : string) {
+    window.open(content, '_blank')
+  }
 }

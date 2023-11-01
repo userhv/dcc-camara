@@ -21,6 +21,11 @@
     border: none;
     text-align: center;  
     cursor: pointer;
+    height: calc(100% + 20px);
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-top: -10px;
+    border-radius: 10px;
     /* margin: 0 auto ; */
   }
 

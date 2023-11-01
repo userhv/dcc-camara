@@ -18,7 +18,7 @@
                             <ng-container *ngIf="meeting.id === agenda[1]">
                                 <div class="list">
                                     <p>{{ agenda[0] }}</p>
-                                    <i class="bi bi-eye-fill"></i>
+                                    <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda[2])"></i>
                                 </div>
                             </ng-container>
                         </div>
@@ -47,7 +47,7 @@
                             <ng-container *ngIf="meeting.id === agenda[1]">
                                 <div class="list">
                                     <p>{{ agenda[0] }}</p>
-                                    <i class="bi bi-eye-fill"></i>
+                                    <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda[2])"></i>
                                 </div>
                             </ng-container>
                         </div>

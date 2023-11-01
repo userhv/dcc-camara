@@ -20,8 +20,8 @@ import { BrowserModule } from '@angular/platform-browser';
   
   <h1 class="simple-text">{{username}} </h1>
   <p class="role-text">{{role}}</p>
-  <button class="nav-item button-nav">
-  <a routerLink="/home" >Inicio</a>
+  <button class="nav-item button-nav" routerLink="/home">
+  Inicio
   </button>
 
   <ng-container *ngIf="adminType">

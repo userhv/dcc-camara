@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css']
 })
+
 export class MeetingDetailsComponent {
   newdata: any;
   newAgenda: any;
@@ -62,5 +63,9 @@ export class MeetingDetailsComponent {
         this.agendas.push(agendaData)
       }
     })
+  }
+
+  openPDF(content : string) {
+    window.open(content, '_blank')
   }
 }
