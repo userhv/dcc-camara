@@ -29,7 +29,8 @@ export class CreateMeetingsComponent {
 
     this.createMeetingService.createMeeting(title, formatedDate, token).subscribe(
       (response:any) => {
-        this.router.navigate(['/meeting/' + response.id_reuniao])
+        window.location.href = '/meeting/' + response.id_reuniao
+        // navigate altera a URL, mas não carrega a página ao menos que dê reload
       },
       (error) => {
         console.error('Create new meeting failed:', error);
