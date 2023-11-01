@@ -1,0 +1,29 @@
+<div class="modal fade" id="create-agenda-modal" tabindex="-1" role="dialog"
+    aria-labelledby="create-agenda-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="create-agenda-modal-label">Cadastrar pauta</h5>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-start">
+                    <label for="basic-url" class="form-label">Pauta: </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="agenda-title" name="agenda-title">
+                    </div>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="agenda-files" class="form-label">Arquivo:</label>
+                    <input class="form-control" type="file" id="agenda-files" name="agenda-files" multiple>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#create-agenda-modal">
+    <b>+</b>
+</button>

@@ -1,0 +1,25 @@
+<div class="modal fade" id="create-meetings-modal" tabindex="-1" role="dialog"
+    aria-labelledby="create-meetings-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="create-meetings-modal-label">Cadastrar reunião</h5>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-start">
+                    <label for="basic-url" class="form-label">Data da reunião: </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="meeting-date" placeholder="dd/mm/aaaa">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="newMeeting()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" class="nav-item button-nav" data-bs-toggle="modal" data-bs-target="#create-meetings-modal">
+    Cadastrar reunião
+</button>

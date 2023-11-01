@@ -1,0 +1,16 @@
+<div class="agenda">
+    <div ngbAccordion>
+        <h1>{{meeting[1]}}</h1>
+        <hr class="dark-red">
+        <div class="agenda-header mb-3">
+            <h3>Adicionar pauta</h3>
+            <create-agenda></create-agenda>
+        </div>
+        <div class="agenda-list" *ngFor="let agenda of agendas;">
+            <div  class="list">
+                <p>{{ agenda[0] }}</p>
+                <i class="bi bi-eye-fill"></i>
+            </div>
+        </div>
+    </div>
+</div>
