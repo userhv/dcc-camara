@@ -14,6 +14,7 @@ cur.execute('DROP TABLE IF EXISTS usuario CASCADE; ')
 cur.execute('DROP TABLE IF EXISTS reuniao CASCADE;')
 cur.execute('DROP TABLE IF EXISTS pauta CASCADE;')
 cur.execute('DROP TABLE IF EXISTS usuario_reuniao CASCADE;')
+
 cur.execute('CREATE TABLE usuario (id serial PRIMARY KEY,'
             'nome varchar (150) NOT NULL,'
             'role varchar (50) NOT NULL,'
