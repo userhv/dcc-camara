@@ -61,4 +61,6 @@
     - Adicionar a remoção de reuniao
     - Adicionar o botao de sair
     - Corrigir funcionalidades que nao estao de acordo com o prototipo.
+    - Permitir ocultar ou mostrar uma reuniao para os outros membros que nao sejam chefia.
+    
 
