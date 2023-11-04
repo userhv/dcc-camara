@@ -14,16 +14,16 @@ class documentSerivce(documentRepository):
         pass
 
   
-    def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str)->Document:
+    def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str,reqUserId:str)->Document:
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
        
         if(decoded_token['user_type'] == "Chefia"):
             # create doccument already aproved
-            document = documentFactory(title=title,meetingId=meetingId,approved=True,path=path)
+            document = documentFactory(title=title,meetingId=meetingId,approved=True,path=path,reqUserId=reqUserId)
         else:
             # create document not aproved yet
-            document = documentFactory(title=title,meetingId=meetingId,approved=False,path=path)
+            document = documentFactory(title=title,meetingId=meetingId,approved=False,path=path,reqUserId=reqUserId)
         return document
        
     def getDocuments(self,title:str,document:str,conn,reunion_id:str,upload_folder:str)->str:
@@ -54,9 +54,9 @@ class documentSerivce(documentRepository):
     def insertDB(document: Document,conn) -> str:
          
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO pauta (titulo, reuniao_id, documento,aprovado)'
-                        'VALUES (%s, %s, %s,%s) RETURNING id',
-                        (document.title, document.meetingId, document.path,document.approved))
+        cursor.execute('INSERT INTO pauta (titulo,reuniao_id ,usuario_id, documento,aprovado)'
+                        'VALUES (%s, %s, %s, %s,%s) RETURNING id',
+                        (document.title, document.meetingId, document.reqUserId, document.path,document.approved))
         
         id_pauta = cursor.fetchone()[0]
         conn.commit()

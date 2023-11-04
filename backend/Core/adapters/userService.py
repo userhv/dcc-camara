@@ -25,7 +25,7 @@ class userSerivce(userRepository):
 
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT nome,role FROM usuario WHERE nome = %s", (userName,))
+            "SELECT nome,role,id FROM usuario WHERE nome = %s", (userName,))
         user = cursor.fetchone()
         cursor.close()
 
@@ -34,7 +34,8 @@ class userSerivce(userRepository):
 
         user_id = user[0]
         user_type = user[1]
+        unique_id = user[2]
 
-        token = jwt.encode({'user_id': user_id, 'user_type': user_type}, secretKey, algorithm='HS256')
+        token = jwt.encode({'user_id': user_id, 'user_type': user_type,"unique_id":unique_id}, secretKey, algorithm='HS256')
 
         return{'access_token': token, "user":user_id, "user_type":user_type}

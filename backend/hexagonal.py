@@ -91,12 +91,14 @@ def postNewAgenda():
                             password='123456')
    
     cursor = conn.cursor()
-    data = request.form  # Usar request.form para obter os dados do formulário
+  
+    data = request.form
+   # Usar request.form para obter os dados do formulário
     # Extracting data from form
     token = data['token']
     decoded_token = jwt.decode(
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
-    
+    print("teste-------------------------------------------------------------------")
     agenda_title = data['title']
     reunion_id = data['reunion_id']
 
@@ -112,8 +114,7 @@ def postNewAgenda():
 
     filename = secure_filename(file.filename)
     
-
-    document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename)
+    document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename,reqUserId=decoded_token['unique_id'])
     document_id = documentSerivce.insertDB(document=document,conn=conn)
     cursor.execute('''SELECT titulo FROM reuniao
                       WHERE id = %s''', (reunion_id))
@@ -137,7 +138,7 @@ def removeAgenda():
     agenda_title = data['title']
 
     ds =documentSerivce()
-    document =documentFactory(meetingId=reuniao_id,title=agenda_title,path="none",approved=False)
+    document =documentFactory(meetingId=reuniao_id,title=agenda_title,path="none",approved=False,reqUserId=decoded_token['user_id'])
     to_return =ds.deleteDocumentDB(conn=conn,token=token,secretKey=app.config["SECRET_KEY"],document=document,uploadFolder=UPLOAD_FOLDER)
 
     return jsonify(to_return)
@@ -149,16 +150,36 @@ def getAllAgendas():
     to_return = documentSerivce.getAllAgenda(token=token,secret_key=app.config["SECRET_KEY"], conn=conn)
     return jsonify({'data': to_return})
 
-@app.route('/aprove_agenda',method=['POST'])
+@app.route('/user_requests',methods=['GET'])
+def getWaitingApproval():
+    conn = get_db_connection()
+    token = request.args.get('token')
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    cur =conn.cursor()
+    cur.execute('SELECT * FROM pauta WHERE usuario_id = %s', (decoded_token['unique_id'],))
+    result = cur.fetchall()
+    return jsonify({'data':result})
+
+
+
+@app.route('/approve_agenda',methods=['POST'])
 def aproveAgenda():
     conn = get_db_connection()
     data = request.get_json()
     token = data['token']
-    
-
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    agendaId = data['agendaId']
+    cursor =conn.cursor()
+    cursor.execute('UPDATE pauta SET aprovado = %s WHERE id = %s',
+               (True,agendaId))
+    conn.commit()
+    return jsonify({'AgendaId':agendaId,"Approved":True})
 
 
 if __name__ == '__main__':
     app.run(debug=True)
 
     
+#eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiRGlzY2VudGUiLCJ1c2VyX3R5cGUiOiJSZXByZXNlbnRhbnRlIERpc2NlbnRlIn0.uQV6Fi6cnMgoOdYG6_1_O6ncK-9JhqcwKxAAGPWJZKU
