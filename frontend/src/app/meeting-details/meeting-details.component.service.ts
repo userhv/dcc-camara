@@ -57,10 +57,10 @@ export class GetAgendaService {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('reunion_id', reunion_id.toString());
-    formData.append('token', token);
+    // formData.append('token', token);
     //this was just to check what happens when a non admin users makes a new agenda
     //basicaly it creates a agenda but only admins and the own requester can see it
-    // formData.append('token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiRGlzY2VudGUiLCJ1c2VyX3R5cGUiOiJSZXByZXNlbnRhbnRlIERpc2NlbnRlIiwidW5pcXVlX2lkIjoxfQ.e5YurjyLAcH6JTeAOZPJ3iNCr4DQh9Vqjgc8Oij-48w");
+    formData.append('token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiRGlzY2VudGUiLCJ1c2VyX3R5cGUiOiJSZXByZXNlbnRhbnRlIERpc2NlbnRlIiwidW5pcXVlX2lkIjoxfQ.e5YurjyLAcH6JTeAOZPJ3iNCr4DQh9Vqjgc8Oij-48w");
     formData.append('document', document);
 
     return this.http.post(this.newAgendaUrl, formData);

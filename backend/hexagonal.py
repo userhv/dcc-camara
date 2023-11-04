@@ -151,7 +151,7 @@ def getAllAgendas():
     return jsonify({'data': to_return})
 
 @app.route('/user_requests',methods=['GET'])
-def getWaitingApproval():
+def getUserRequest():
     conn = get_db_connection()
     token = request.args.get('token')
     decoded_token = jwt.decode(
@@ -160,6 +160,18 @@ def getWaitingApproval():
     cur.execute('SELECT * FROM pauta WHERE usuario_id = %s', (decoded_token['unique_id'],))
     result = cur.fetchall()
     return jsonify({'data':result})
+
+@app.route('/waiting_approval',methods=['GET'])
+def getWaitingApproval():
+    conn = get_db_connection()
+    token = request.args.get('token')
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    cur =conn.cursor()
+    cur.execute('SELECT * FROM pauta WHERE aprovado= false', )
+    result = cur.fetchall()
+    return jsonify({'data':result})
+
 
 
 
@@ -176,6 +188,7 @@ def aproveAgenda():
                (True,agendaId))
     conn.commit()
     return jsonify({'AgendaId':agendaId,"Approved":True})
+
 
 
 if __name__ == '__main__':
