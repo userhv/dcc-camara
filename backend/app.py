@@ -360,6 +360,8 @@ def getAllMeetings():
                 cursor.execute("SELECT nome FROM usuario WHERE id IN %s", (tuple(users),))
                 names = cursor.fetchall()
                 to_return[index].append(names)
+
+    print(to_return)
     return jsonify({'data': to_return})
 
 @app.route('/new_meeting', methods=['POST'])

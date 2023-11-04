@@ -9,11 +9,11 @@ class documentRepository():
         pass
 
     @abstractmethod
-    def createNewDocument()->str:
+    def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str)->Document:
         pass
     
     @abstractmethod
-    def getAgenda():
+    def getAllAgenda(token:str, secret_key:str,conn):
         pass
 
     @abstractmethod
@@ -35,6 +35,16 @@ class documentRepository():
     @abstractmethod
     def removeAgendaFiles(self,reunion_title:str, agenda_title:str, reuniao_id:str, agenda_id:str,upload_folder:str)->None:
         pass
- 
+    
+    @abstractmethod
+    def deleteDocument(self,conn,token:str,secretKey:str,document:Document,uploadFolder:str):
+        pass
+    @abstractmethod
+    def approveDocument(token:str,secretKey:str,document:Document):
+        pass
+    @abstractmethod
+    def getDocumentById(documentId:str)->Document:
+        pass
+        
     
 

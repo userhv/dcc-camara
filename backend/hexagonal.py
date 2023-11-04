@@ -53,8 +53,8 @@ def getAllMeetings():
 
     token = request.args.get('token')
     returnDict = meetingSerivce.getMeetingInfo(token=token,secretKey=app.config['SECRET_KEY'])
-    
-    return jsonify({'data':returnDict})
+    print(returnDict['data'])
+    return jsonify({'data':returnDict['data']})
 
 @app.route('/new_meeting', methods=['POST'])
 def postNewMeeting():
@@ -124,7 +124,23 @@ def postNewAgenda():
     dc.uploadAgenda(reunion_title, agenda_title, reunion_id, document_id, file,UPLOAD_FOLDER)
     return jsonify({"id_reuniao": reunion_id})
 
+@app.route('/remove_agenda', methods=['POST'])
+def removeAgenda():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    data = request.get_json()
+    # extracting data from token
+    token = data['token']
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    reuniao_id = data['reuniaoId']
+    agenda_title = data['title']
 
+    ds =documentSerivce()
+    document =documentFactory(meetingId=reuniao_id,title=agenda_title,path="none",approved=False)
+    to_return =ds.deleteDocumentDB(conn=conn,token=token,secretKey=app.config["SECRET_KEY"],document=document,uploadFolder=UPLOAD_FOLDER)
+
+    return jsonify(to_return)
 @app.route('/agenda', methods=['GET'])
 def getAllAgendas():
     conn = get_db_connection()
@@ -132,6 +148,15 @@ def getAllAgendas():
     token = request.args.get('token')
     to_return = documentSerivce.getAllAgenda(token=token,secret_key=app.config["SECRET_KEY"], conn=conn)
     return jsonify({'data': to_return})
+
+@app.route('/aprove_agenda',method=['POST'])
+def aproveAgenda():
+    conn = get_db_connection()
+    data = request.get_json()
+    token = data['token']
+    
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

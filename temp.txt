@@ -1,0 +1,1 @@
+{'data': [(1, 'REUNIÃO DE 22/10/2023', datetime.date(2023, 10, 22)), (2, 'REUNIÃO DE 29/10/2023', datetime.date(2023, 10, 29)), (3, 'REUNIÃO DE 01/11/2023', datetime.date(2023, 11, 2)), (5, 'REUNIÃO DE 18/11/2023', datetime.date(2023, 11, 18)), (4, 'REUNIÃO DE 26/11/2023', datetime.date(2023, 11, 26)), (6, 'REUNIÃO DE 25/09/2024', datetime.date(2024, 9, 25))]}
