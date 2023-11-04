@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ApiserviceFetch } from '../home-agenda/home-agenda.component.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { format } from 'date-fns'; // Importe a função format de date-fns
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ActivatedRoute } from '@angular/router';
-import { Meeting } from '../../meeting/meeting'
+import { Meeting } from '../../meeting/meeting';
+import { DomSanitizer } from '@angular/platform-browser'; // Importe o DomSanitizer
+import { GetAgendaService } from './meeting-details.component.service';
 
 @Component({
   selector: 'meeting-details',
@@ -15,18 +15,27 @@ import { Meeting } from '../../meeting/meeting'
 
 export class MeetingDetailsComponent {
   newdata: any;
-  newAgenda: any;
+  newAgenda_: any;
   title = 'Home';
   currentDate: Date;
   token: any;
   agendas: any[] = [];
   meeting_id: any;
   meeting: any[] = [];
+  agendaTitle: string = ''; // Inicialize a variável agendaTitle
+  selectedFiles: FileList | null = null; // Inicialize a variável selectedFiles
 
-  constructor(private _apiservice: ApiserviceFetch, private jwtHelper: JwtHelperService, private router: ActivatedRoute) {
+  constructor(
+    private _apiservice: ApiserviceFetch,
+    private getAgendaService: GetAgendaService,
+    private jwtHelper: JwtHelperService,
+    private router: ActivatedRoute,
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer // Injete o DomSanitizer
+  ) {
     this.currentDate = new Date();
-    this.token = localStorage.getItem('access_token')
-    this.meeting_id = this.router.snapshot.params["id"];
+    this.token = localStorage.getItem('access_token');
+    this.meeting_id = this.router.snapshot.params['id'];
   }
 
   ngOnInit() {
@@ -39,23 +48,125 @@ export class MeetingDetailsComponent {
     });
     this._apiservice.getAgenda().subscribe({
       next: (res) => {
-        this.newAgenda = res;
+        this.newAgenda_ = res;
         this.getAgendas();
-        console.log(this.agendas)
+        console.log(this.agendas);
       },
       error: (err) => console.log(err)
-    })
+    });
   }
 
-  getMeeting(){
-    this.meeting = Meeting.getMeetingWithID(this.newdata.data, this.meeting_id)
+  getMeeting() {
+    this.meeting = Meeting.getMeetingWithID(this.newdata.data, this.meeting_id);
   }
 
-  getAgendas(){
-    this.agendas = Meeting.getAgendasWithMeetingID(this.newAgenda.data, this.meeting_id)
+  getAgendas() {
+    this.agendas = Meeting.getAgendasWithMeetingID(this.newAgenda_.data, this.meeting_id);
   }
 
-  openPDF(content : string) {
-    window.open(content, '_blank')
+  downloadPDF(agenda: any[]) {
+    function processString(_string: string): string {
+      const processed_string = _string
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '_');
+      return processed_string;
+    }
+    const agenda_title = processString(agenda[0]);
+    const reunion_id = agenda[1];
+    const document = agenda[2];
+    const downloadPDF = true;
+
+    const token = localStorage.getItem('access_token') || '';
+
+    this.getAgendaService
+      .getDownloadService(agenda_title, reunion_id, document, downloadPDF, token)
+      .subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          console.log(url)
+          window.open(url, '_blank');
+        },
+        error: (error: any) => {
+          console.log(error.url)
+          window.open(error.url, '_blank');
+        }
+      });
+  }
+
+  openPDF(agenda: any) {
+    function processString(_string: string): string {
+      const processed_string = _string
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '_');
+      return processed_string;
+    }
+    const agenda_title = processString(agenda[0]);
+    const reunion_id = agenda[1];
+    const document = agenda[2];
+
+    const token = localStorage.getItem('access_token') || '';
+
+    this.getAgendaService
+      .getAgendaService(agenda_title, reunion_id, document, token)
+      .subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          console.log(url)
+          window.open(url, '_blank');
+        },
+        error: (error: any) => {
+          console.log(error.url)
+          window.open(error.url);
+        }
+      });
+  }
+
+  removeAgenda(agenda: any, reload = true){
+    const token = localStorage.getItem('access_token') || "";
+    const agendaTitle = agenda[0]
+    const reuniao_id = agenda[1]
+
+    this.getAgendaService.removeAgenda(agendaTitle, reuniao_id, token).subscribe(
+      (response:any) => {
+        console.log(response)
+        if (reload == true) window.location.reload();
+      },
+      (error) => {
+        console.error('Deleting agenda failed:', error);
+      }
+    )
+  }
+
+  newAgenda() {
+    const token = localStorage.getItem('access_token') || '';
+    const id = this.route.snapshot.params['id'];
+
+    if (this.selectedFiles && this.selectedFiles.length > 0) {
+      const file = this.selectedFiles.item(0) as File;
+      this.getAgendaService
+        .createAgendaWithFile(this.agendaTitle, id, file, token)
+        .subscribe(
+          (response: any) => {
+            console.log(response);
+            window.location.reload();
+          },
+          (error) => {
+            console.error('Create new meeting failed:', error);
+          }
+        );
+    }
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFiles = event.target.files;
+  }
+
+  editAgenda(agenda: any) {
+    this.newAgenda()
+    this.removeAgenda(agenda, false)
   }
 }

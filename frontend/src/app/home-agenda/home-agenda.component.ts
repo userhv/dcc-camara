@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { format } from 'date-fns'; // Importe a função format de date-fns
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { RouterModule } from '@angular/router';
+import { GetAgendaService } from '../meeting-details/meeting-details.component.service';
 
 @Component({
   selector: 'home-agenda',
@@ -25,7 +26,7 @@ export class HomeAgendaComponent implements OnInit {
   userType: any;
   agendas: any[] = [];
 
-  constructor(private _apiservice: ApiserviceFetch, private jwtHelper: JwtHelperService) {
+  constructor(private _apiservice: ApiserviceFetch, private getAgendaService: GetAgendaService, private jwtHelper: JwtHelperService) {
     this.currentDate = new Date();
     this.token = localStorage.getItem('access_token')
     if (this.token) {
@@ -90,7 +91,33 @@ export class HomeAgendaComponent implements OnInit {
     console.log(this.agendas)
   }
 
-  openPDF(content : string) {
-    window.open(content, '_blank')
+  openPDF(agenda: any) {
+    function processString(_string: string): string {
+      const processed_string = _string
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '_');
+      return processed_string;
+    }
+    const agenda_title = processString(agenda[0]);
+    const reunion_id = agenda[1];
+    const document = agenda[2];
+
+    const token = localStorage.getItem('access_token') || '';
+
+    this.getAgendaService
+      .getAgendaService(agenda_title, reunion_id, document, token)
+      .subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          console.log(url)
+          window.open(url, '_blank');
+        },
+        error: (error: any) => {
+          console.log(error.url)
+          window.open(error.url);
+        }
+      });
   }
 }

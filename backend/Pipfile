@@ -11,6 +11,7 @@ flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 flask-migrate = "*"
 flask-script = "*"
+pyjwt = "*"
 
 [dev-packages]
 

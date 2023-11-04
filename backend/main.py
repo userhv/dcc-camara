@@ -8,6 +8,8 @@ from models.user import User, UserSchema
 # creating the Flask application
 from flask_cors import CORS
 
+import os
+
 app = Flask(__name__)
 CORS(app)
 

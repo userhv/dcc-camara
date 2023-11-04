@@ -46,3 +46,22 @@
     - Visualizar as pautas por meio de um modal dentro do sistema.
     - Adicionar essa funcionalidade no card de pautas.
 
+### Tarefas para fazer
+
+* Como usuario gostaria de solicitar uma pauta para reunião.
+    - O perfil do usuario pode solicitar uma pauta para a reunião. A solicitação estara vigente apenas para a próxima reunião.
+    - O perfil chefia pode controlar as solicitações, aprovando, reprovando ou marcando como pendente para adicionar algum documento.
+    - Caso marcado como pendente, deve aparecer o campo pra inserir novos documentos, ver figma.
+    - Ao marcar como aprovar ou reprovar, os botoes de gerenciamento da solicitação de pauta somem no perfil da chefia.
+
+
+* Diversas correções de bugs
+    - No modal de pautas, implementar as funcionalidades de gerenciamento, editar, remver, visualizar, baixar
+    - Ajustar o modal de cadastrar pauta para se parecer com o do prototipo.
+    - Adicionar a remoção de reuniao
+    - Adicionar o botao de sair
+    - Corrigir funcionalidades que nao estao de acordo com o prototipo.
+    - Permitir ocultar ou mostrar uma reuniao para os outros membros que nao sejam chefia. (adicionar icone de visualização na frente do icone de deletar reuniao)
+    
+
+

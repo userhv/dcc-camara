@@ -13,7 +13,7 @@ cur = conn.cursor()
 cur.execute('DROP TABLE IF EXISTS usuario CASCADE; ')
 cur.execute('DROP TABLE IF EXISTS reuniao CASCADE;')
 cur.execute('DROP TABLE IF EXISTS pauta CASCADE;')
-cur.execute('DROP TABLE IF EXISTS usuario_reuniao CASCADE;')
+
 
 cur.execute('CREATE TABLE usuario (id serial PRIMARY KEY,'
             'nome varchar (150) NOT NULL,'
@@ -31,12 +31,10 @@ cur.execute('CREATE TABLE pauta (id serial PRIMARY KEY,'
             'reuniao_id serial NOT NULL,'
             'FOREIGN KEY(reuniao_id) REFERENCES reuniao(id)  ON UPDATE CASCADE ON DELETE CASCADE,'
             'documento varchar (150) NOT NULL,'
+            'aprovado boolean,'
             'date_added date DEFAULT CURRENT_TIMESTAMP);'
             )
-cur.execute('CREATE TABLE usuario_reuniao (usuario_id integer '
-            'REFERENCES usuario(id),reuniao_id integer '
-            'REFERENCES reuniao(id),PRIMARY KEY (usuario_id,reuniao_id) );'
-            )
+
 # Insert data into the table
 
 cur.execute('INSERT INTO usuario (nome, role)'
@@ -74,41 +72,30 @@ cur.execute('INSERT INTO reuniao (titulo,date_added)'
             'VALUES (%s, %s)',
             ('REUNIÃO DE 18/11/2023',"2023-11-18")
             )
-cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
-            'VALUES (%s, %s)',
-            (1,3)
+ 
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento,aprovado)'
+            'VALUES (%s, %s, %s,%s)',
+            ("Gráfico de Contributors",3,"\\assets\\Contributions.png",True,)
             )
-cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
-            'VALUES (%s, %s)',
-            (1,4)
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento,aprovado)'
+            'VALUES (%s, %s, %s,%s)',
+            ("DCC Week", 3,"\\assets\\Documento.pdf",True,)
             )
-cur.execute('INSERT INTO usuario_reuniao (usuario_id,reuniao_id)'
-            'VALUES (%s, %s)',
-            (1,2)
-            )            
-cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
-            'VALUES (%s, %s, %s)',
-            ("Gráfico de Contributors",3,"\\assets\\Contributions.png")
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento,aprovado)'
+            'VALUES (%s, %s, %s,%s)',
+            ("Disciplina de Ciência de Dados",1,"\\assets\\Documento.pdf",True,)
             )
-cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
-            'VALUES (%s, %s, %s)',
-            ("DCC Week", 3,"\\assets\\Documento.pdf")
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento,aprovado)'
+            'VALUES (%s, %s, %s,%s)',
+            ("Mudança no percurso curricular de Ciência da Computação",2,"\\assets\\Documento.pdf",True,)
             )
-cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
-            'VALUES (%s, %s, %s)',
-            ("Disciplina de Ciência de Dados",1,"\\assets\\Documento.pdf")
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento,aprovado)'
+            'VALUES (%s, %s, %s,%s)',
+            ("Matriz curricular comum para CC e SI",3,"\\assets\\Documento.pdf",True,)
             )
-cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
-            'VALUES (%s, %s, %s)',
-            ("Mudança no percurso curricular de Ciência da Computação",2,"\\assets\\Documento.pdf")
-            )
-cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
-            'VALUES (%s, %s, %s)',
-            ("Matriz curricular comum para CC e SI",3,"\\assets\\Documento.pdf")
-            )
-cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento)'
-            'VALUES (%s, %s, %s)',
-            ("Mudança de horário de disciplinas",4,"\\assets\\Documento.pdf")
+cur.execute('INSERT INTO pauta (titulo,reuniao_id, documento,aprovado)'
+            'VALUES (%s, %s, %s,%s)',
+            ("Mudança de horário de disciplinas",4,"\\assets\\Documento.pdf",True,)
             )
 
 

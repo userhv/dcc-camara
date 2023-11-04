@@ -16,28 +16,10 @@ class meetingSerivce(meetingRepository):
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
         data=[]
-        #All meetings if a admin
-        if(decoded_token['user_type'] == "Chefia"):
-            cursor.execute("SELECT * FROM reuniao ORDER BY date_added, id")
-            data = cursor.fetchall()
-        #only fetch meetings a normal user is in
-        if(decoded_token['user_type'] == "Representante Discente"):
+     
+        cursor.execute("SELECT * FROM reuniao ORDER BY date_added, id")
+        data = cursor.fetchall()
         
-            # this whole thing probably better with joins
-            # Get user id from user name
-            cursor.execute(
-                "SELECT  ID FROM usuario WHERE nome = %s", (decoded_token['user_id'],))
-            user_id = cursor.fetchone()[0]
-            
-            # Get all meetings ids that user have access too
-            cursor.execute(
-                'SELECT reuniao_id from usuario_reuniao WHERE usuario_id =%s', (user_id,))
-            all_meetings = cursor.fetchall()
-            all_meetings= [i[0] for i in all_meetings] 
-            # Get full info from meetings from meetings ids
-            cursor.execute('''SELECT * from reuniao WHERE id in %s
-                            ORDER BY date_added, id''', (tuple(all_meetings),))
-            data= cursor.fetchall()
         return {'data': data}
     
     def createNewMeeting(title:str,date:str,token,secretKey:str) -> Meeting:
@@ -60,4 +42,6 @@ class meetingSerivce(meetingRepository):
         conn.commit()
         meeting_id = cursor.fetchone()[0]
         return {"id_reuniao": meeting_id}
+   
+
     

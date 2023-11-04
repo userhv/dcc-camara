@@ -13,3 +13,4 @@ class meetingRepository():
     @abstractmethod
     def insertDB(meeting:Meeting)-> str:
         pass
+ 

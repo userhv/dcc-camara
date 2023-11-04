@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 import { JwtModule,JWT_OPTIONS} from '@auth0/angular-jwt';
 import { JwtHelperService} from '@auth0/angular-jwt';
 import { HomeAgendaComponent } from './home-agenda/home-agenda.component';
-import { CreateAgendasComponent } from './create-agendas/create-agendas.component';
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 import { MeetingComponent } from './meeting/meeting.component';
 
@@ -55,7 +54,6 @@ AppComponent
     JwtModule,
     HomeAgendaComponent,
     CreateMeetingsComponent,
-    CreateAgendasComponent,
   ],
   providers: [ { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],
