@@ -1,12 +1,20 @@
-from flask import Flask, jsonify, render_template, request, url_for, redirect
+from flask import Flask, jsonify, render_template, request, url_for, redirect, send_file
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
 import psycopg2
 import sys
 import jwt
 import logging
 import json
+import os
+import unidecode
 app = Flask(__name__)
 CORS(app)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 def get_db_connection():
@@ -16,6 +24,50 @@ def get_db_connection():
                             password='123456')
     return conn
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
+def getFolder(reunion_title, agenda_title, reuniao_id, agenda_id,):
+    folder = reunion_title.replace("REUNIÃO DE", "").replace(
+        "/", "-") + '_' + str(reuniao_id)
+    folder = folder + '/' + \
+        agenda_title.replace(' ', '_').lower() + "_" + str(agenda_id)
+    folder = unidecode.unidecode(folder)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], folder.replace(" ", ""))
+    return path
+
+
+def getFile(reunion_title, agenda_title, reuniao_id, agenda_id, document):
+    path = getFolder(reunion_title, agenda_title, reuniao_id,
+                     agenda_id).replace("REUNIAODE", "")
+
+    print(path)
+    print(document)
+
+    print(os.path.join(path, document))
+
+    return os.path.join(path, document)
+
+
+def uploadAgenda(reunion_title, agenda_title, reuniao_id, agenda_id, document):
+    path = getFolder(reunion_title, agenda_title, reuniao_id, agenda_id)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    file_path = os.path.join(path, secure_filename(document.filename))
+    document.save(file_path)  # Use a função 'save' no objeto do arquivo
+
+
+def removeAgendaFiles(reunion_title, agenda_title, reuniao_id, agenda_id):
+    path = getFolder(reunion_title, agenda_title, reuniao_id, agenda_id)
+    for root, dirs, files in os.walk(path, topdown=False):
+        for name in files:
+            os.remove(os.path.join(root, name))
+        for name in dirs:
+            os.rmdir(os.path.join(root, name))
+    os.rmdir(path)
 
 @app.route('/')
 def index():
@@ -133,8 +185,99 @@ def getAllAgendas():
     
     return jsonify({'data': to_return})
 
+@app.route('/get_agenda', methods=['GET'])
+def getAgenda():
+    reunion_id = request.args.get('reunion_id')
+    title = request.args.get('title')
+    document = request.args.get('document')
+
+    download = request.args.get('download')
+
+    print(download)
+
+    title = unidecode.unidecode(title)
+    document = unidecode.unidecode(document)
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT titulo FROM reuniao
+                      WHERE id = %s''', (reunion_id))
+    reunion_title = cursor.fetchall()[0][0]
+
+    reunion_title = unidecode.unidecode(reunion_title)
+    cursor.execute(
+        'SELECT id, titulo FROM pauta WHERE reuniao_id = %s AND documento = %s', (reunion_id, document))
+    data = cursor.fetchall()
+    agenda_id = data[0][0]
+    agenda_title = data[0][1]
+    cursor.close()
+    conn.close()
+
+
+    if data:
+        filename = getFile(reunion_title, agenda_title,
+                           reunion_id, agenda_id, document)
+        
+        if download == "true":
+            print("IOUAGUDIGAUDGASUDAP")
+            return send_file(filename, as_attachment=True)
+        return send_file(filename)
+        
+    else:
+        return 'Agenda não encontrada', 404
+
 @app.route('/new_agenda', methods=['POST'])
 def postNewAgenda():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    data = request.form  # Usar request.form para obter os dados do formulário
+
+    # Extracting data from form
+    token = data['token']
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    agenda_title = data['title']
+    reunion_id = data['reunion_id']
+
+    # Verificar se um arquivo foi enviado
+    if 'document' not in request.files:
+        return jsonify({'message': 'No file part'}), 400
+
+    file = request.files['document']
+
+    # Verificar se o arquivo tem um nome
+    if file.filename == '':
+        return jsonify({'message': 'No selected file'}), 400
+
+    # Verificar se a extensão do arquivo é permitida
+    if not allowed_file(file.filename):
+        return jsonify({'message': 'File extension not allowed'}), 400
+
+    # Salvar o arquivo no servidor
+    filename = secure_filename(file.filename)
+
+    # Agora você pode continuar com a criação da pauta no banco de dados
+
+    cursor.execute('INSERT INTO pauta (titulo, reuniao_id, documento)'
+                   'VALUES (%s, %s, %s) RETURNING id, titulo, documento',
+                   (agenda_title, reunion_id, filename))
+    data = cursor.fetchall()
+
+    agenda_id = data[0][0]
+
+    conn.commit()
+
+    cursor.execute('''SELECT titulo FROM reuniao
+                      WHERE id = %s''', (reunion_id))
+    reunion_title = cursor.fetchone()[0]
+    cursor.close()
+    conn.close()
+
+    uploadAgenda(reunion_title, agenda_title, reunion_id, agenda_id, file)
+    return jsonify({"id_reuniao": reunion_id})
+
+@app.route('/remove_agenda', methods=['POST'])
+def removeAgenda():
     conn = get_db_connection()
     cursor = conn.cursor()
     data = request.get_json()
@@ -142,22 +285,36 @@ def postNewAgenda():
     token = data['token']
     decoded_token = jwt.decode(
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
-    title = data['title']
-    reunion_id = data['reunion_id']
-    document = data['document']
+    reuniao_id = data['reuniaoId']
+    agenda_title = data['title']
 
     # only create meeting if an admin requests it
-    if(decoded_token['user_type'] == "Chefia"):
-        # create meeting
-        cursor.execute('INSERT INTO pauta (titulo, reuniao_id, documento)'
-                       'VALUES (%s, %s, %s) RETURNING id',
-                       (title, reunion_id, document))
-        id_pauta = cursor.fetchone()[0]
+    if (decoded_token['user_type'] == "Chefia"):
+        cursor.execute('''SELECT id FROM pauta
+            WHERE titulo = %s''', (agenda_title,))
+        agenda_id = cursor.fetchone()[0]
+        print(agenda_id)
+        # delete meeting
+        cursor.execute('''
+            DELETE FROM pauta
+            WHERE reuniao_id = %s AND titulo = %s
+            ''', (reuniao_id, agenda_title))
 
         conn.commit()
+
+        cursor.execute('''
+            SELECT titulo, id FROM reuniao
+            WHERE id = %s
+        ''', (reuniao_id,))
+        data = cursor.fetchall()
+
+        reunion_title = data[0][0]
         cursor.close()
         conn.close()
-        return jsonify({"id_pauta": id_pauta, "reunion_id": reunion_id})
+
+        removeAgendaFiles(reunion_title, agenda_title, reuniao_id, agenda_id)
+
+        return jsonify({"reunion_id": reuniao_id})
 
 @app.route('/meetings', methods=['get'])
 def getAllMeetings():

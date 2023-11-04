@@ -4,12 +4,48 @@
         <hr class="dark-red">
         <div class="agenda-header mb-3">
             <h3>Adicionar pauta</h3>
-            <app-create-agendas></app-create-agendas>
+            <div class="modal fade" id="create-agenda-modal" tabindex="-1" role="dialog"
+                aria-labelledby="create-agenda-modal-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="create-agenda-modal-label">Cadastrar pauta</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3 text-start">
+                                <label for="basic-url" class="form-label">Pauta: </label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="agenda-title" name="agenda-title"
+                                        [(ngModel)]="agendaTitle">
+                                </div>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="agenda-files" class="form-label">Arquivo:</label>
+                                <input class="form-control" type="file" id="agenda-files" name="agenda-files"
+                                    (change)="onFileSelected($event)">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                (click)="newAgenda()">Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#create-agenda-modal">
+                <b>+</b>
+            </button>
         </div>
         <div class="agenda-list" *ngFor="let agenda of agendas;">
             <div class="list">
                 <p>{{ agenda[0] }}</p>
-                <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda[2])"></i>
+                <div>
+                    <i class="bi bi-trash-fill" style="cursor: pointer;" (click)="removeAgenda(agenda)"></i>
+                    <i class="bi bi-pencil-fill" style="cursor: pointer;" (click)="editAgenda(agenda)"></i>
+                    <i class="bi bi bi-download" style="cursor: pointer;" (click)="downloadPDF(agenda)"></i>
+                    <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda)"></i>
+                </div>
             </div>
         </div>
         <p class="h2 text-danger" *ngIf="agendas.length == 0">Nenhuma pauta foi adicionada</p>

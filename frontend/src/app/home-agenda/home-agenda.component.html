@@ -11,14 +11,14 @@
                     <ng-template>
                         <div class="agenda-header">
                             <h3>Pautas</h3>
-                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences">Preferências</button>
+                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences dark-red">Preferências</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">
                             <ng-container *ngIf="meeting.id === agenda[1]">
                                 <div class="list">
                                     <p>{{ agenda[0] }}</p>
-                                    <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda[2])"></i>
+                                    <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda)"></i>
                                 </div>
                             </ng-container>
                         </div>
