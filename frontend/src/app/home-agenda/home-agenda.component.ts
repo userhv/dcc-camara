@@ -94,6 +94,38 @@ export class HomeAgendaComponent implements OnInit {
     console.log(localStorage.getItem("currentMeetingId"))
   }
 
+  rejectPending(agendaData: any){
+    const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
+    const token = localStorage.getItem('access_token') || '';
+    
+    console.log(pauta_id, token);
+
+    this.getAgendaService.rejectAgenda(pauta_id, token).subscribe({
+      next: (response: any) => {
+        window.location.reload();
+      },
+      error: (error: any) => {
+        console.log(error)
+      }
+    });
+  }
+
+  approvePending(agendaData: any){
+    const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
+    const token = localStorage.getItem('access_token') || '';
+
+    console.log(pauta_id, token);
+
+    this.getAgendaService.approveAgenda(pauta_id, token).subscribe({
+      next: (response: any) => {
+        window.location.reload();
+      },
+      error: (error: any) => {
+        console.log(error)
+      }
+    });
+  }
+
   openPDF(agenda: any) {
     function processString(_string: string): string {
       const processed_string = _string

@@ -10,6 +10,9 @@ export class GetAgendaService {
   private removeAgendaUrl = 'http://127.0.0.1:5000/remove_agenda';
   private newAgendaUrl = 'http://127.0.0.1:5000/new_agenda';
 
+  private rejectAgendaUrl = 'http://127.0.0.1:5000/reject_agenda';
+  private approveAgendaUrl = 'http://127.0.0.1:5000/approve_agenda';
+
   constructor(private http: HttpClient) {}
 
   removeAgenda(title: string, reuniaoId: number, token: string,): Observable<any> {
@@ -61,5 +64,19 @@ export class GetAgendaService {
     formData.append('document', document);
 
     return this.http.post(this.newAgendaUrl, formData);
+  }
+
+  rejectAgenda(
+    agendaId: number,
+    token: string
+  ): Observable<any> {
+    return this.http.post(this.rejectAgendaUrl, {agendaId, token});
+  }
+
+  approveAgenda(
+    agendaId: number,
+    token: string
+  ): Observable<any> {
+    return this.http.post(this.approveAgendaUrl, {agendaId, token});
   }
 }

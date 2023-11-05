@@ -173,7 +173,57 @@ def getWaitingApproval():
     result = cur.fetchall()
     return jsonify({'data':result})
 
-@app.route('/approve_agenda',methods=['POST'])
+@app.route('/reject_agenda', methods=['POST'])
+def rejectAgenda():
+    conn = get_db_connection()
+    data = request.get_json()
+    token = data['token']
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    agendaId = data['agendaId']
+    cursor =conn.cursor()
+    cursor.execute('DELETE FROM pauta WHERE id = %s', (agendaId, ))
+    conn.commit()
+    return jsonify({'AgendaId':agendaId})
+
+@app.route('/update_agenda', methods=['POST'])
+def updateAgenda():
+    conn =  get_db_connection()
+    cursor = conn.cursor()
+    data = request.form
+    # Usar request.form para obter os dados do formulário
+    # Extracting data from form
+    token = data['token']
+    decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    print("teste-------------------------------------------------------------------")
+    agenda_title = data['title']
+    reunion_id = data['reunion_id']
+
+    # Verificar se um arquivo foi enviado
+    if 'document' not in request.files:
+        return jsonify({'message': 'No file part'}), 400
+
+    file = request.files['document']
+
+    # Verificar se o arquivo tem um nome
+    if file.filename == '':
+        return jsonify({'message': 'No selected file'}), 400
+
+    filename = secure_filename(file.filename)
+    
+    document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename,reqUserId=decoded_token['unique_id'])
+    document_id = documentSerivce.insertDB(document=document,conn=conn)
+    cursor.execute('''SELECT titulo FROM reuniao
+                      WHERE id = %s''', (reunion_id))
+    reunion_title = cursor.fetchone()[0]
+    cursor.close()
+    conn.close()
+    dc = documentSerivce()
+    dc.uploadAgenda(reunion_title, agenda_title, reunion_id, document_id, file,UPLOAD_FOLDER)
+    return jsonify({"id_reuniao": reunion_id})
+    return jsonify({'AgendaId':agendaId})
+
+@app.route('/approve_agenda', methods=['POST'])
 def aproveAgenda():
     conn = get_db_connection()
     data = request.get_json()
@@ -182,7 +232,7 @@ def aproveAgenda():
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
     agendaId = data['agendaId']
     cursor =conn.cursor()
-    cursor.execute('UPDATE pauta SET aprovado = %s WHERE id = %s', (True,agendaId))
+    cursor.execute('UPDATE pauta SET aprovado = %s WHERE id = %s', (True, agendaId))
     conn.commit()
     return jsonify({'AgendaId':agendaId,"Approved":True})
 

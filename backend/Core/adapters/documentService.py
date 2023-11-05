@@ -12,7 +12,6 @@ class documentSerivce(documentRepository):
      
     def approveDocument(userName:str)->None:
         pass
-
   
     def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str,reqUserId:str)->Document:
         decoded_token = jwt.decode(
@@ -63,7 +62,7 @@ class documentSerivce(documentRepository):
        
         return {"id_pauta": id_pauta, "reunion_id": document.meetingId}
     
-    def updateDocumentDB(document:Document,conn)->str:
+    def updateDocumentDB(document:Document, conn)->str:
 
         cursor = conn.cursor()
         cursor.execute('UPDATE pauta SET titulo = %s, reuniao_id = %s, documento = %s, aprovado = %s WHERE id = %s',
