@@ -12,7 +12,10 @@ psycopg2-binary = "*"
 flask-migrate = "*"
 flask-script = "*"
 pyjwt = "*"
+<<<<<<< HEAD
 werkzeug = "*"
+=======
+>>>>>>> hexagonal
 
 [dev-packages]
 
