@@ -116,7 +116,7 @@ export class MeetingDetailsComponent {
           const blob = new Blob([response], { type: 'application/pdf' });
           const url = URL.createObjectURL(blob);
           console.log(url)
-          window.open(url, '_blank');
+          window.open(url);
         },
         error: (error: any) => {
           console.log(error.url)
@@ -133,7 +133,7 @@ export class MeetingDetailsComponent {
     this.getAgendaService.removeAgenda(agendaTitle, reuniao_id, token).subscribe(
       (response:any) => {
         console.log(response)
-        if (reload == true) window.location.reload();
+        if (reload) window.location.reload();
       },
       (error) => {
         console.error('Deleting agenda failed:', error);

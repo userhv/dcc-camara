@@ -76,11 +76,13 @@ def getAgenda():
     title = request.args.get('title')
     document = request.args.get('document')
 
-    # download = request.args.get('download')
+    download = request.args.get('download')
     conn = get_db_connection()
     documentService =documentSerivce()
     filename=documentService.getDocuments(title=title,document=document,conn=conn,reunion_id=reunion_id,upload_folder=UPLOAD_FOLDER)
     
+    if download == 'true':
+        return send_file(filename, as_attachment=True)
     return send_file(filename)
         
 @app.route('/new_agenda', methods=['POST'])

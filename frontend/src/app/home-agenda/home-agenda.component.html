@@ -6,7 +6,7 @@
         <add-pending></add-pending>
         <div ngbAccordionItem *ngFor="let meeting of upcomingMeetings">
             <button ngbAccordionButton>
-                <h2>REUNIÃO DE {{ meeting.date }}</h2>
+                <h2>{{ meeting.title }}</h2>
             </button>
             <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
@@ -115,7 +115,7 @@
         <hr class="dark-red">
         <div ngbAccordionItem *ngFor="let meeting of pastMeetings">
             <button ngbAccordionButton>
-                <h2>REUNIÃO DE {{ meeting.date }}</h2>
+                <h2>{{meeting.title}}</h2>
             </button>
             <div ngbAccordionCollapse>
                 <div ngbAccordionBody>

@@ -219,7 +219,6 @@ def getAgenda():
                            reunion_id, agenda_id, document)
         
         if download == "true":
-            print("IOUAGUDIGAUDGASUDAP")
             return send_file(filename, as_attachment=True)
         return send_file(filename)
         

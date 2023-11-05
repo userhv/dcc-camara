@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,10 +15,10 @@ export class GetAgendaService {
   private updateAgendaCommentUrl = 'http://127.0.0.1:5000/update_agenda_comment';
   private approveAgendaUrl = 'http://127.0.0.1:5000/approve_agenda';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   removeAgenda(title: string, reuniaoId: number, token: string,): Observable<any> {
-    const data = {title, reuniaoId, token};
+    const data = { title, reuniaoId, token };
     return this.http.post(this.removeAgendaUrl, data);
   }
 
@@ -29,11 +29,11 @@ export class GetAgendaService {
     token: string
   ): Observable<any> {
     const params = new HttpParams()
-    .set('title', agenda_title as string)
-    .set('reunion_id', reunion_id.toString() as string)
-    .set('token', token as string)
-    .set('document', document as string);
-    return this.http.get(this.getAgendaURL, {params});
+      .set('title', agenda_title as string)
+      .set('reunion_id', reunion_id.toString() as string)
+      .set('token', token as string)
+      .set('document', document as string);
+    return this.http.get(this.getAgendaURL, { params });
   }
 
   getDownloadService(
@@ -44,13 +44,13 @@ export class GetAgendaService {
     token: string
   ): Observable<any> {
     const params = new HttpParams()
-    .set('title', agenda_title as string)
-    .set('reunion_id', reunion_id.toString() as string)
-    .set('token', token as string)
-    .set('document', document as string)
-    .set('download', download as boolean);
+      .set('title', agenda_title as string)
+      .set('reunion_id', reunion_id.toString() as string)
+      .set('token', token as string)
+      .set('document', document as string)
+      .set('download', download as boolean);
 
-    return this.http.get(this.getAgendaURL, {params});
+    return this.http.get(this.getAgendaURL, { params });
   }
 
   createAgendaWithFile(
@@ -72,7 +72,7 @@ export class GetAgendaService {
     agendaId: number,
     token: string
   ): Observable<any> {
-    return this.http.post(this.rejectAgendaUrl, {agendaId, token});
+    return this.http.post(this.rejectAgendaUrl, { agendaId, token });
   }
 
   updateAgendaComment(
@@ -80,7 +80,7 @@ export class GetAgendaService {
     agendaComment: string,
     token: string
   ): Observable<any> {
-    return this.http.post(this.updateAgendaCommentUrl, {agendaId, agendaComment, token});
+    return this.http.post(this.updateAgendaCommentUrl, { agendaId, agendaComment, token });
   }
 
   updateAgendaFile(
@@ -103,6 +103,6 @@ export class GetAgendaService {
     agendaId: number,
     token: string
   ): Observable<any> {
-    return this.http.post(this.approveAgendaUrl, {agendaId, token});
+    return this.http.post(this.approveAgendaUrl, { agendaId, token });
   }
 }
