@@ -18,9 +18,7 @@ import { AddPendingComponent } from '../add-pending/add-pending.component';
 })
 export class HomeAgendaComponent implements OnInit {
   newdata: any;
-  pendingAgendas: any = [[/* meeting_id = */4, /* agenda_title*/ "Pedido de Inclusão AA", /* agenda_status */ "Reprovado", /* obs*/ "Adicione documentos", /* doc_name */ "documento sobre xxxx"],
-    [/* meeting_id = */4, /* agenda_title*/ "Pedido de Inclusão BB", /* agenda_status */ "Pendente", /* obs*/ "Adicione documentos", /* doc_name */ "documento sobre xxxx"],
-[/* meeting_id = */4, /* agenda_title*/ "Pedido de Inclusão CC", /* agenda_status */ "Aprovado", /* obs*/ "Adicione documentos", /* doc_name */ "documento sobre yyyyyy"]];
+  pendingAgendas: any = [];
   newAgenda: any;
   title = 'Home';
   currentDate: Date;
@@ -78,27 +76,22 @@ export class HomeAgendaComponent implements OnInit {
   }
 
   mapAndFilterAgendas() {
-    this.newAgenda.data.forEach((agendaData: [any, any, any]) => {
-      const [titulo, reuniao_id, documento] = agendaData;
-      if (this.userType) {
+    this.newAgenda.data.forEach((agendaData: [any, any, any, any, any, any]) => {
+      const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
+      if (aprovado){
         this.agendas.push(agendaData)
-      }
-      else {
-        this.newdata.data.forEach((meetingData: [any, any, any]) => {
-          const [id, title, dateStr] = meetingData;
-          if (id == reuniao_id) {
-            this.agendas.push(agendaData)
-          }
-        });
+      }else{
+        this.pendingAgendas.push(agendaData)
       }
     })
 
-    console.log(this.agendas)
+    console.log('Pautas:', this.agendas);
+    console.log('Pautas pendentes:', this.pendingAgendas);
   }
 
   updateCurrentMeetingId(meetingId: number) {
-    this.currentMeetingId = meetingId
-    console.log(this.currentMeetingId)
+    localStorage.setItem("currentMeetingId", meetingId.toString());
+    console.log(localStorage.getItem("currentMeetingId"))
   }
 
   openPDF(agenda: any) {

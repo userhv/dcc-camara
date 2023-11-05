@@ -54,7 +54,7 @@ class documentSerivce(documentRepository):
     def insertDB(document: Document,conn) -> str:
          
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO pauta (titulo,reuniao_id ,usuario_id, documento,aprovado)'
+        cursor.execute('INSERT INTO pauta (titulo,reuniao_id ,usuario_id, documento, aprovado)'
                         'VALUES (%s, %s, %s, %s,%s) RETURNING id',
                         (document.title, document.meetingId, document.reqUserId, document.path,document.approved))
         
@@ -99,8 +99,6 @@ class documentSerivce(documentRepository):
 
 
     def uploadAgenda(self,reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder):
-  
-       
       
         path = self.getFolder(reunion_title, agenda_title, reuniao_id, agenda_id['id_pauta'],document,upload_folder)
     
@@ -127,12 +125,9 @@ class documentSerivce(documentRepository):
         
         user_id = decoded_token['user_id']  # Obtém o ID do usuário conectado
         cursor=conn.cursor()
+
         # Consulta SQL para obter os dados da agenda do usuário
-        cursor.execute('''
-                SELECT titulo, reuniao_id, documento
-                FROM pauta
-                WHERE aprovado=True
-            ''')
+        cursor.execute(''' SELECT titulo, reuniao_id, documento, aprovado, comentario, id FROM pauta ''')
 
         data = cursor.fetchall()
         

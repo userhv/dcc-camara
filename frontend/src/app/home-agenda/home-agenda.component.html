@@ -20,14 +20,23 @@
                         <div *ngFor="let pendingAgenda of pendingAgendas">
                             <!-- Chefia -->
                             <div *ngIf="userType">
-                                <ng-container *ngIf="(meeting.id === pendingAgenda[0] && pendingAgenda[2] == 'Pendente')">
+                                <!-- const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = pendingAgenda -->
+                                <ng-container *ngIf="meeting.id === pendingAgenda[1]">
                                     <div class="pendint-list py-3">
                                         <div class="row">
                                             <div class="col-12 mb-3">
-                                                <h4>{{pendingAgenda[1]}}</h4>
+                                                <div class="agenda-title">{{pendingAgenda[0]}}</div>
                                             </div>
                                             <div class="col-12 mb-3">
-                                                Documentos:
+                                                <div class="mb-2">Documento:</div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-between">
+                                                            {{pendingAgenda[2]}}
+                                                            <h4 class="m-0"><i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(pendingAgenda)"></i></h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-12 d-flex flex-row-reverse">
                                                 <button type="button" class="btn btn-danger ms-3">Aprovar</button>
@@ -42,31 +51,41 @@
                             </div>
                             <!-- Discente -->
                             <div *ngIf="userType == false">
-                                <ng-container *ngIf="meeting.id === pendingAgenda[0]">
+                                <!-- const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = pendingAgenda -->
+                                <ng-container *ngIf="meeting.id === pendingAgenda[1]">
                                     <div class="pendint-list py-3">
                                         <div class="row">
                                             <div class="col-12 mb-3">
-                                                <h4>{{pendingAgenda[1]}}</h4>
+                                                <div class="agenda-title">{{pendingAgenda[0]}}</div>
                                             </div>
                                             <div class="col-12 mb-3">
                                                 Status: 
-                                                <span *ngIf="pendingAgenda[2] == 'Aprovado'" class="badge bg-success">Aprovado</span>
-                                                <span *ngIf="pendingAgenda[2] == 'Pendente'" class="badge bg-warning">Pendente</span>
-                                                <span *ngIf="pendingAgenda[2] == 'Reprovado'" class="badge bg-danger">Reprovado</span>
+                                                <span class="badge bg-warning">Pendente</span>
                                             </div>
                                             <div class="col-12 mb-3">
-                                                Observação:
-                                                <div class="card" style="background: #D9D9D9;">
+                                                <div class="mb-2">Documento:</div>
+                                                <div class="card">
                                                     <div class="card-body">
-                                                        {{pendingAgenda[3]}}
+                                                        <div class="d-flex justify-content-between">
+                                                            {{pendingAgenda[2]}}
+                                                            <h4 class="m-0"><i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(pendingAgenda)"></i></h4>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="pendingAgenda[2] == 'Pendente'" class="mb-3 text-start">
+                                            <div class="col-12 mb-3">
+                                                <div class="mb-2">Cometário:</div>
+                                                <div class="card" style="background: #D9D9D9;">
+                                                    <div class="card-body">
+                                                        {{pendingAgenda[4]}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 text-start">
                                                 <label for="agenda-files" class="form-label">Arquivo:</label>
                                                 <input class="form-control" type="file" id="request-agenda-files" name="request-agenda-files">
                                             </div>
-                                            <div *ngIf="pendingAgenda[2] == 'Pendente'" class="col-12 d-flex flex-row-reverse">
+                                            <div class="col-12 d-flex flex-row-reverse">
                                                 <button type="button" class="btn btn-danger">Enviar</button>
                                             </div>
                                         </div>

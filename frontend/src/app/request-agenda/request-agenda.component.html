@@ -14,7 +14,7 @@
                 </div>
                 <div class="mb-3 text-start">
                     <label for="agenda-files" class="form-label">Arquivo:</label>
-                    <input class="form-control" type="file" id="request-agenda-files" name="request-agenda-files">
+                    <input class="form-control" type="file" id="request-agenda-files" name="request-agenda-files"  (change)="onFileSelected($event)">
                 </div>
             </div>
             <div class="modal-footer">

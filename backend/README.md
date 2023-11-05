@@ -21,5 +21,5 @@
 4) Execute o flask (pode ser necessário usar python3 ao inves de python):
 
     ~~~
-    python app.py
+    python hexagonal.py
     ~~~

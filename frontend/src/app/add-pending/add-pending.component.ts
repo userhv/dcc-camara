@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { GetAgendaService } from '../meeting-details/meeting-details.component.service';
 
 @Component({
   selector: 'add-pending',
@@ -13,5 +14,5 @@ import { Router } from '@angular/router';
 })
 export class AddPendingComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private getAgendaService: GetAgendaService) {}
 }

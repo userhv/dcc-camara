@@ -34,6 +34,7 @@ cur.execute('CREATE TABLE pauta (id serial PRIMARY KEY,'
             'FOREIGN KEY(usuario_id) REFERENCES usuario(id)  ON UPDATE CASCADE ON DELETE CASCADE,'
             'documento varchar (150) NOT NULL,'
             'aprovado boolean,'
+            'comentario varchar (500),'
             'date_added date DEFAULT CURRENT_TIMESTAMP);'
             )
 
@@ -99,7 +100,10 @@ cur.execute('INSERT INTO pauta (titulo,reuniao_id,usuario_id, documento,aprovado
             'VALUES (%s, %s, %s, %s, %s)',
             ("Mudança de horário de disciplinas",4,1,"\\assets\\Documento.pdf",True)
             )
-
+cur.execute('INSERT INTO pauta (titulo,reuniao_id,usuario_id, documento,aprovado)'
+            'VALUES (%s, %s, %s, %s, %s)',
+            ("Mudança de horário de monitorias",4,1,"\\assets\\Documento.pdf",False)
+            )
 
 
 
