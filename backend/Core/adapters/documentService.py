@@ -13,16 +13,16 @@ class documentSerivce(documentRepository):
     def approveDocument(userName:str)->None:
         pass
   
-    def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str,reqUserId:str)->Document:
+    def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str,reqUserId:str, comment:str = "")->Document:
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
        
         if(decoded_token['user_type'] == "Chefia"):
             # create doccument already aproved
-            document = documentFactory(title=title,meetingId=meetingId,approved=True,path=path,reqUserId=reqUserId)
+            document = documentFactory(title=title,meetingId=meetingId,approved=True,path=path,reqUserId=reqUserId, comment = comment)
         else:
             # create document not aproved yet
-            document = documentFactory(title=title,meetingId=meetingId,approved=False,path=path,reqUserId=reqUserId)
+            document = documentFactory(title=title,meetingId=meetingId,approved=False,path=path,reqUserId=reqUserId, comment = comment)
         return document
        
     def getDocuments(self,title:str,document:str,conn,reunion_id:str,upload_folder:str)->str:
@@ -62,11 +62,16 @@ class documentSerivce(documentRepository):
        
         return {"id_pauta": id_pauta, "reunion_id": document.meetingId}
     
+    def updateDocumentDBFile(document: Document, conn):
+        cursor = conn.cursor()
+        cursor.execute('UPDATE pauta SET documento = %s WHERE id = %s', (document.path, document.id))
+        conn.commit()
+        
     def updateDocumentDB(document:Document, conn)->str:
 
         cursor = conn.cursor()
-        cursor.execute('UPDATE pauta SET titulo = %s, reuniao_id = %s, documento = %s, aprovado = %s WHERE id = %s',
-               (document.title, document.meetingId, document.path, document.approved, document.id))
+        cursor.execute('UPDATE pauta SET titulo = %s, reuniao_id = %s, documento = %s, comentario = %s WHERE id = %s',
+               (document.title, document.meetingId, document.path,  document.comment, document.id))
 
                 
         id_pauta = cursor.fetchone()[0]
@@ -99,7 +104,7 @@ class documentSerivce(documentRepository):
 
     def uploadAgenda(self,reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder):
       
-        path = self.getFolder(reunion_title, agenda_title, reuniao_id, agenda_id['id_pauta'],document,upload_folder)
+        path = self.getFolder(reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder)
     
         if not os.path.exists(path):
             os.makedirs(path)

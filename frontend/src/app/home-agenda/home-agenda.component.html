@@ -40,7 +40,7 @@
                                             </div>
                                             <div class="col-12 d-flex flex-row-reverse">
                                                 <button type="button" class="btn btn-danger ms-3" (click)="approvePending(pendingAgenda)">Aprovar</button>
-                                                <button type="button" class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#add-pending-modal">
+                                                <button type="button" class="btn btn-danger ms-3" data-bs-toggle="modal" (click)="updateCurrentAgendaId(pendingAgenda[5])" data-bs-target="#add-pending-modal">
                                                     Solicitar documentos
                                                 </button>
                                                 <button type="button" class="btn btn-danger" (click)="rejectPending(pendingAgenda)">Rejeitar</button>
@@ -83,10 +83,10 @@
                                             </div>
                                             <div class="mb-3 text-start">
                                                 <label for="agenda-files" class="form-label">Arquivo:</label>
-                                                <input class="form-control" type="file" id="request-agenda-files" name="request-agenda-files">
+                                                <input class="form-control" type="file" id="request-agenda-files_{{pendingAgenda[5]}}" name="request-agenda-files" (change)="onFileSelected(pendingAgenda, $event)">
                                             </div>
                                             <div class="col-12 d-flex flex-row-reverse">
-                                                <button type="button" class="btn btn-danger">Enviar</button>
+                                                <button type="button" class="btn btn-danger" (click)="updatePendingFile(pendingAgenda)">Enviar</button>
                                             </div>
                                         </div>
                                     </div>  

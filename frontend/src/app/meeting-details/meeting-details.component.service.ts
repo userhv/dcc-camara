@@ -11,6 +11,8 @@ export class GetAgendaService {
   private newAgendaUrl = 'http://127.0.0.1:5000/new_agenda';
 
   private rejectAgendaUrl = 'http://127.0.0.1:5000/reject_agenda';
+  private updateAgendaFileUrl = 'http://127.0.0.1:5000/update_agenda_file';
+  private updateAgendaCommentUrl = 'http://127.0.0.1:5000/update_agenda_comment';
   private approveAgendaUrl = 'http://127.0.0.1:5000/approve_agenda';
 
   constructor(private http: HttpClient) {}
@@ -71,6 +73,30 @@ export class GetAgendaService {
     token: string
   ): Observable<any> {
     return this.http.post(this.rejectAgendaUrl, {agendaId, token});
+  }
+
+  updateAgendaComment(
+    agendaId: number,
+    agendaComment: string,
+    token: string
+  ): Observable<any> {
+    return this.http.post(this.updateAgendaCommentUrl, {agendaId, agendaComment, token});
+  }
+
+  updateAgendaFile(
+    agendaId: number,
+    agendaTitle: string,
+    meetingId: number,
+    token: string,
+    document: File
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('agendaId', agendaId.toString());
+    formData.append('meetingId', meetingId.toString());
+    formData.append('agendaTitle', agendaTitle);
+    formData.append('token', token);
+    formData.append('document', document);
+    return this.http.post(this.updateAgendaFileUrl, formData);
   }
 
   approveAgenda(

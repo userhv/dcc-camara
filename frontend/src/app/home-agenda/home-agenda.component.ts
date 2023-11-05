@@ -1,3 +1,4 @@
+import * as angular from "angular";
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiserviceFetch } from './home-agenda.component.service';
@@ -29,6 +30,7 @@ export class HomeAgendaComponent implements OnInit {
   userType: any;
   agendas: any[] = [];
   currentMeetingId = 0;
+  agendaToFileDic: any = {}
 
   constructor(private _apiservice: ApiserviceFetch, private getAgendaService: GetAgendaService, private jwtHelper: JwtHelperService) {
     this.currentDate = new Date();
@@ -78,9 +80,9 @@ export class HomeAgendaComponent implements OnInit {
   mapAndFilterAgendas() {
     this.newAgenda.data.forEach((agendaData: [any, any, any, any, any, any]) => {
       const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
-      if (aprovado){
+      if (aprovado) {
         this.agendas.push(agendaData)
-      }else{
+      } else {
         this.pendingAgendas.push(agendaData)
       }
     })
@@ -94,10 +96,15 @@ export class HomeAgendaComponent implements OnInit {
     console.log(localStorage.getItem("currentMeetingId"))
   }
 
-  rejectPending(agendaData: any){
+  updateCurrentAgendaId(apgendaId: number){
+    localStorage.setItem("currentAgendaId", apgendaId.toString());
+    console.log(localStorage.getItem("currentAgendaId"))
+  }
+
+  rejectPending(agendaData: any) {
     const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
     const token = localStorage.getItem('access_token') || '';
-    
+
     console.log(pauta_id, token);
 
     this.getAgendaService.rejectAgenda(pauta_id, token).subscribe({
@@ -110,7 +117,28 @@ export class HomeAgendaComponent implements OnInit {
     });
   }
 
-  approvePending(agendaData: any){
+  onFileSelected(agendaData: any, event: any){
+    const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
+    this.agendaToFileDic[pauta_id] = event.target.files;
+  }
+
+  updatePendingFile(agendaData: [any, any, any, any, any, number]){
+    const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
+    const token = localStorage.getItem('access_token') || '';
+
+    const file = this.agendaToFileDic[pauta_id].item(0) as File;;
+    
+    this.getAgendaService.updateAgendaFile(pauta_id, titulo, reuniao_id, token, file).subscribe({
+      next: (response: any) => {
+        window.location.reload();
+      },
+      error: (error: any) => {
+        console.log(error)
+      }
+    });
+  }
+
+  approvePending(agendaData: any) {
     const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = agendaData
     const token = localStorage.getItem('access_token') || '';
 

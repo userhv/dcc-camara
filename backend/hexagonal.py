@@ -122,7 +122,7 @@ def postNewAgenda():
     cursor.close()
     conn.close()
     dc = documentSerivce()
-    dc.uploadAgenda(reunion_title, agenda_title, reunion_id, document_id, file,UPLOAD_FOLDER)
+    dc.uploadAgenda(reunion_title, agenda_title, reunion_id, document_id["id_pauta"], file,UPLOAD_FOLDER)
     return jsonify({"id_reuniao": reunion_id})
 
 @app.route('/remove_agenda', methods=['POST'])
@@ -138,7 +138,7 @@ def removeAgenda():
     agenda_title = data['title']
 
     ds =documentSerivce()
-    document =documentFactory(meetingId=reuniao_id,title=agenda_title,path="none",approved=False,reqUserId=decoded_token['user_id'])
+    document = documentFactory(meetingId=reuniao_id,title=agenda_title,path="none",approved=False,reqUserId=decoded_token['user_id'])
     to_return =ds.deleteDocumentDB(conn=conn,token=token,secretKey=app.config["SECRET_KEY"],document=document,uploadFolder=UPLOAD_FOLDER)
 
     return jsonify(to_return)
@@ -186,8 +186,23 @@ def rejectAgenda():
     conn.commit()
     return jsonify({'AgendaId':agendaId})
 
-@app.route('/update_agenda', methods=['POST'])
-def updateAgenda():
+
+@app.route('/update_agenda_comment', methods=['POST'])
+def updateAgendaComment():
+    conn = get_db_connection()
+    data = request.get_json()
+    token = data['token']
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    agendaId = data['agendaId']
+    agendaComment = data['agendaComment']
+    cursor =conn.cursor()
+    cursor.execute('UPDATE pauta SET comentario = %s WHERE id = %s', (agendaComment, agendaId))
+    conn.commit()
+    return jsonify({'AgendaId':agendaId})
+
+@app.route('/update_agenda_file', methods=['POST'])
+def updateAgendaFile():
     conn =  get_db_connection()
     cursor = conn.cursor()
     data = request.form
@@ -195,33 +210,30 @@ def updateAgenda():
     # Extracting data from form
     token = data['token']
     decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-    print("teste-------------------------------------------------------------------")
-    agenda_title = data['title']
-    reunion_id = data['reunion_id']
 
-    # Verificar se um arquivo foi enviado
-    if 'document' not in request.files:
-        return jsonify({'message': 'No file part'}), 400
-
-    file = request.files['document']
-
-    # Verificar se o arquivo tem um nome
-    if file.filename == '':
-        return jsonify({'message': 'No selected file'}), 400
-
-    filename = secure_filename(file.filename)
+    print(data)
+    agenda_id = data["agendaId"]
+    agenda_title = data["agendaTitle"]
+    meeting_id = data["meetingId"]
     
-    document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename,reqUserId=decoded_token['unique_id'])
-    document_id = documentSerivce.insertDB(document=document,conn=conn)
-    cursor.execute('''SELECT titulo FROM reuniao
-                      WHERE id = %s''', (reunion_id))
-    reunion_title = cursor.fetchone()[0]
+    file = request.files['document']
+    filename = secure_filename(file.filename)
+    print(filename)
+
+    document = documentFactory(path=filename, id=agenda_id)
+    document_id = documentSerivce.updateDocumentDBFile(document=document, conn=conn)
+
+    cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (meeting_id))
+    meeting_title = cursor.fetchone()[0]
+    print(meeting_title)
+
     cursor.close()
     conn.close()
+
     dc = documentSerivce()
-    dc.uploadAgenda(reunion_title, agenda_title, reunion_id, document_id, file,UPLOAD_FOLDER)
-    return jsonify({"id_reuniao": reunion_id})
-    return jsonify({'AgendaId':agendaId})
+    dc.uploadAgenda(meeting_title, agenda_title, meeting_id, agenda_id, file, UPLOAD_FOLDER)
+
+    return jsonify({"id_reuniao": meeting_id})
 
 @app.route('/approve_agenda', methods=['POST'])
 def aproveAgenda():

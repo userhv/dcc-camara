@@ -15,4 +15,17 @@ import { GetAgendaService } from '../meeting-details/meeting-details.component.s
 export class AddPendingComponent {
 
   constructor(private router: Router, private getAgendaService: GetAgendaService) {}
+
+  updatePendingComment() {
+    const agendaId = Number(localStorage.getItem("currentAgendaId"));
+    const token = localStorage.getItem('access_token') || '';
+    const comment = angular.element('#pending-comment').val()
+
+    this.getAgendaService.updateAgendaComment(agendaId, comment, token).subscribe({
+        next: (response: any) => {},
+        error: (error: any) => {
+          console.log(error)
+        }
+      });
+  }
 }
