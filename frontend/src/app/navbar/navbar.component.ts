@@ -27,12 +27,6 @@ import { BrowserModule } from '@angular/platform-browser';
   <ng-container *ngIf="adminType">
   <app-create-meetings class="nav-item button-nav" ></app-create-meetings>
 </ng-container>
-
-  <ng-container *!ngIf="adminType">
-  <button class="nav-item">
-  <a routerLink="">Solicitar Pauta</a>
-  </button>
-  </ng-container>
   
   </ul>
   </nav>

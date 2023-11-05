@@ -2,6 +2,7 @@
     <div ngbAccordion [closeOthers]="true">
         <h1>Próximas Reuniões</h1>
         <hr class="dark-red">
+        <app-request-agenda></app-request-agenda>
         <div ngbAccordionItem *ngFor="let meeting of upcomingMeetings">
             <button ngbAccordionButton>
                 <h2>REUNIÃO DE {{ meeting.date }}</h2>
@@ -12,6 +13,7 @@
                         <div class="agenda-header">
                             <h3>Pautas</h3>
                             <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences dark-red">Preferências</button>
+                            <button *ngIf="userType == false" type="button" class="preferences dark-red" (click)="updateCurrentMeetingId(meeting.id)"  data-bs-toggle="modal" data-bs-target="#request-agenda-modal">Solicitar pauta</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">
@@ -40,7 +42,7 @@
                     <ng-template>
                         <div class="agenda-header">
                             <h3>Pautas</h3>
-                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences">Preferências</button>
+                            <button *ngIf="userType" [routerLink]="[ '/meeting', meeting.id]" class="preferences dark-red">Preferências</button>
                         </div>
                         <hr class="dark-red">
                         <div class="agenda-list" *ngFor="let agenda of agendas">

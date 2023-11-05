@@ -15,6 +15,7 @@ import { JwtHelperService} from '@auth0/angular-jwt';
 import { HomeAgendaComponent } from './home-agenda/home-agenda.component';
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 import { MeetingComponent } from './meeting/meeting.component';
+import { RequestAgendaComponent } from './request-agenda/request-agenda.component';
 
 
 export function jwtOptionsFactory(jwtHelper: JwtHelperService) {
@@ -54,6 +55,7 @@ AppComponent
     JwtModule,
     HomeAgendaComponent,
     CreateMeetingsComponent,
+    RequestAgendaComponent,
   ],
   providers: [ { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],

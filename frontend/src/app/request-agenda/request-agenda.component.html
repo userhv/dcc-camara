@@ -1,0 +1,26 @@
+<div class="modal fade" id="request-agenda-modal" tabindex="-1" role="dialog"
+    aria-labelledby="request-agenda-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="request-agenda-modal-label">Solicitar pauta</h5>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-start">
+                    <label for="basic-url" class="form-label">Pauta:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="request-agenda-title" name="agenda-title">
+                    </div>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="agenda-files" class="form-label">Arquivo:</label>
+                    <input class="form-control" type="file" id="request-agenda-files" name="request-agenda-files">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="requestAgenda()">Solicitar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ psycopg2-binary = "*"
 flask-migrate = "*"
 flask-script = "*"
 pyjwt = "*"
+werkzeug = "*"
 
 [dev-packages]
 

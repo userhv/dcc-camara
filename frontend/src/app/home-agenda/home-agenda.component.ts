@@ -6,11 +6,12 @@ import { format } from 'date-fns'; // Importe a função format de date-fns
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { RouterModule } from '@angular/router';
 import { GetAgendaService } from '../meeting-details/meeting-details.component.service';
+import { RequestAgendaComponent } from '../request-agenda/request-agenda.component';
 
 @Component({
   selector: 'home-agenda',
   standalone: true,
-  imports: [NgbModule, CommonModule, RouterModule],
+  imports: [NgbModule, CommonModule, RouterModule, RequestAgendaComponent],
   templateUrl: './home-agenda.component.html',
   styleUrls: ['./home-agenda.component.css']
 })
@@ -25,6 +26,7 @@ export class HomeAgendaComponent implements OnInit {
   decodedToken: any;
   userType: any;
   agendas: any[] = [];
+  currentMeetingId = 0;
 
   constructor(private _apiservice: ApiserviceFetch, private getAgendaService: GetAgendaService, private jwtHelper: JwtHelperService) {
     this.currentDate = new Date();
@@ -89,6 +91,11 @@ export class HomeAgendaComponent implements OnInit {
     })
 
     console.log(this.agendas)
+  }
+
+  updateCurrentMeetingId(meetingId: number){
+    this.currentMeetingId = meetingId
+    console.log(this.currentMeetingId)
   }
 
   openPDF(agenda: any) {
