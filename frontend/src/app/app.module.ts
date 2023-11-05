@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from  '@angular/common/http';
 import { LoginFormComponent } from './login-form/login-form.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './create-meetings/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { JwtModule,JWT_OPTIONS} from '@auth0/angular-jwt';
 import { JwtHelperService} from '@auth0/angular-jwt';
@@ -16,7 +16,7 @@ import { HomeAgendaComponent } from './home-agenda/home-agenda.component';
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 import { MeetingComponent } from './meeting/meeting.component';
 import { RequestAgendaComponent } from './request-agenda/request-agenda.component';
-
+import { AddPendingComponent } from './add-pending/add-pending.component';
 
 export function jwtOptionsFactory(jwtHelper: JwtHelperService) {
   return {

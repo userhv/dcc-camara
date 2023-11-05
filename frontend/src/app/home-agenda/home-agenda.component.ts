@@ -7,16 +7,20 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { RouterModule } from '@angular/router';
 import { GetAgendaService } from '../meeting-details/meeting-details.component.service';
 import { RequestAgendaComponent } from '../request-agenda/request-agenda.component';
+import { AddPendingComponent } from '../add-pending/add-pending.component';
 
 @Component({
   selector: 'home-agenda',
   standalone: true,
-  imports: [NgbModule, CommonModule, RouterModule, RequestAgendaComponent],
+  imports: [NgbModule, CommonModule, RouterModule, RequestAgendaComponent, AddPendingComponent],
   templateUrl: './home-agenda.component.html',
   styleUrls: ['./home-agenda.component.css']
 })
 export class HomeAgendaComponent implements OnInit {
   newdata: any;
+  pendingAgendas: any = [[/* meeting_id = */4, /* agenda_title*/ "Pedido de Inclusão AA", /* agenda_status */ "Reprovado", /* obs*/ "Adicione documentos", /* doc_name */ "documento sobre xxxx"],
+    [/* meeting_id = */4, /* agenda_title*/ "Pedido de Inclusão BB", /* agenda_status */ "Pendente", /* obs*/ "Adicione documentos", /* doc_name */ "documento sobre xxxx"],
+[/* meeting_id = */4, /* agenda_title*/ "Pedido de Inclusão CC", /* agenda_status */ "Aprovado", /* obs*/ "Adicione documentos", /* doc_name */ "documento sobre yyyyyy"]];
   newAgenda: any;
   title = 'Home';
   currentDate: Date;
@@ -36,7 +40,6 @@ export class HomeAgendaComponent implements OnInit {
       this.userType = "Chefia" == this.decodedToken.user_type // Verifica se o usuário logado é chefia
     }
   }
-
 
   ngOnInit() {
     this._apiservice.getdata().subscribe({
@@ -93,7 +96,7 @@ export class HomeAgendaComponent implements OnInit {
     console.log(this.agendas)
   }
 
-  updateCurrentMeetingId(meetingId: number){
+  updateCurrentMeetingId(meetingId: number) {
     this.currentMeetingId = meetingId
     console.log(this.currentMeetingId)
   }

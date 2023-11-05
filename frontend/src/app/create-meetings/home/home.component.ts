@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeAgendaComponent } from '../home-agenda/home-agenda.component';
+import { HomeAgendaComponent } from '../../home-agenda/home-agenda.component';
 
 @Component({
   selector: 'app-home',

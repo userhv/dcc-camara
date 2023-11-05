@@ -3,6 +3,7 @@
         <h1>Próximas Reuniões</h1>
         <hr class="dark-red">
         <app-request-agenda></app-request-agenda>
+        <add-pending></add-pending>
         <div ngbAccordionItem *ngFor="let meeting of upcomingMeetings">
             <button ngbAccordionButton>
                 <h2>REUNIÃO DE {{ meeting.date }}</h2>
@@ -16,6 +17,63 @@
                             <button *ngIf="userType == false" type="button" class="preferences dark-red" (click)="updateCurrentMeetingId(meeting.id)"  data-bs-toggle="modal" data-bs-target="#request-agenda-modal">Solicitar pauta</button>
                         </div>
                         <hr class="dark-red">
+                        <div *ngFor="let pendingAgenda of pendingAgendas">
+                            <!-- Chefia -->
+                            <div *ngIf="userType">
+                                <ng-container *ngIf="(meeting.id === pendingAgenda[0] && pendingAgenda[2] == 'Pendente')">
+                                    <div class="pendint-list py-3">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <h4>{{pendingAgenda[1]}}</h4>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                Documentos:
+                                            </div>
+                                            <div class="col-12 d-flex flex-row-reverse">
+                                                <button type="button" class="btn btn-danger ms-3">Aprovar</button>
+                                                <button type="button" class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#add-pending-modal">
+                                                    Solicitar documentos
+                                                </button>
+                                                <button type="button" class="btn btn-danger">Rejeitar</button>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </ng-container>
+                            </div>
+                            <!-- Discente -->
+                            <div *ngIf="userType == false">
+                                <ng-container *ngIf="meeting.id === pendingAgenda[0]">
+                                    <div class="pendint-list py-3">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <h4>{{pendingAgenda[1]}}</h4>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                Status: 
+                                                <span *ngIf="pendingAgenda[2] == 'Aprovado'" class="badge bg-success">Aprovado</span>
+                                                <span *ngIf="pendingAgenda[2] == 'Pendente'" class="badge bg-warning">Pendente</span>
+                                                <span *ngIf="pendingAgenda[2] == 'Reprovado'" class="badge bg-danger">Reprovado</span>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                Observação:
+                                                <div class="card" style="background: #D9D9D9;">
+                                                    <div class="card-body">
+                                                        {{pendingAgenda[3]}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="pendingAgenda[2] == 'Pendente'" class="mb-3 text-start">
+                                                <label for="agenda-files" class="form-label">Arquivo:</label>
+                                                <input class="form-control" type="file" id="request-agenda-files" name="request-agenda-files">
+                                            </div>
+                                            <div *ngIf="pendingAgenda[2] == 'Pendente'" class="col-12 d-flex flex-row-reverse">
+                                                <button type="button" class="btn btn-danger">Enviar</button>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </ng-container>
+                            </div>
+                        </div>
                         <div class="agenda-list" *ngFor="let agenda of agendas">
                             <ng-container *ngIf="meeting.id === agenda[1]">
                                 <div class="list">
