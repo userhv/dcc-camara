@@ -113,11 +113,12 @@ def postNewAgenda():
         return jsonify({'message': 'No selected file'}), 400
 
     filename = secure_filename(file.filename)
+    
+    user_id = userSerivce.getUserId(token=token,secretKey=app.config['SECRET_KEY'])
 
-    cursor.execute('''SELECT id FROM usuario WHERE nome = %s AND role = %s''', (decoded_token['user_id'], decoded_token['user_type']))
-    user_id = cursor.fetchone()[0]
     document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename,reqUserId=user_id)
     document_id = documentSerivce.insertDB(document=document,conn=conn)
+
     reunion_title =meetingSerivce.getMeetingTitle(meetingId=reunion_id, conn=conn) 
 
     cursor.close()
@@ -167,17 +168,6 @@ def getAllAgendas():
     token = request.args.get('token')
     to_return = documentSerivce.getAllAgenda(token=token,secret_key=app.config["SECRET_KEY"], conn=conn)
     return jsonify({'data': to_return})
-
-@app.route('/user_requests',methods=['GET'])
-def getUserRequest():
-    conn = get_db_connection()
-    token = request.args.get('token')
-    decoded_token = jwt.decode(
-        token, app.config['SECRET_KEY'], algorithms=['HS256'])
-    cur =conn.cursor()
-    cur.execute('SELECT * FROM pauta WHERE usuario_id = %s', (decoded_token['unique_id'],))
-    result = cur.fetchall()
-    return jsonify({'data': result})
 
 @app.route('/reject_agenda', methods=['POST'])
 def rejectAgenda():

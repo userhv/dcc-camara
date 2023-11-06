@@ -7,15 +7,13 @@ import jwt
 
 class userSerivce(userRepository):
 
-    def getUserInfo(token:str,secretKey:str)->dict:
-        
-        conn = psycopg2.connect(host='localhost',
-                            database='camara_db',
-                            user='admin',
-                            password='123456')
-        cursor = conn.cursor()
+    def getUserId(token:str, secretKey: str)->int:
         decoded_token = jwt.decode( token,secretKey, algorithms=['HS256'])
-        return {'username':decoded_token['user_id'],'role':decoded_token['user_type']}
+        return decoded_token["unique_id"]
+    
+    def getUserInfo(token:str,secretKey:str)->dict:
+        decoded_token = jwt.decode( token,secretKey, algorithms=['HS256'])
+        return {'username':decoded_token['user_id'], 'role':decoded_token['user_type']}
 
     def loginUser(userName:str,secretKey:str)-> dict:
         conn =  psycopg2.connect(host='localhost',
