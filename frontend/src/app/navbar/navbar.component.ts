@@ -27,6 +27,11 @@ import { BrowserModule } from '@angular/platform-browser';
   <ng-container *ngIf="adminType">
   <app-create-meetings class="nav-item button-nav" ></app-create-meetings>
 </ng-container>
+
+  <button class="nav-item button-nav" style="background: none; color: red;" routerLink="/login">
+  <i class="bi bi-box-arrow-right"></i>
+  Sair
+  </button>
   
   </ul>
   </nav>

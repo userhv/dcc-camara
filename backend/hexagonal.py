@@ -79,7 +79,7 @@ def getAgenda():
     download = request.args.get('download')
     conn = get_db_connection()
     documentService =documentSerivce()
-    filename=documentService.getDocuments(title=title,document=document,conn=conn,reunion_id=reunion_id,upload_folder=UPLOAD_FOLDER)
+    filename=documentService.getDocuments(title,document,conn,reunion_id,UPLOAD_FOLDER)
     
     if download == 'true':
         return send_file(filename, as_attachment=True)
@@ -115,11 +115,15 @@ def postNewAgenda():
         return jsonify({'message': 'No selected file'}), 400
 
     filename = secure_filename(file.filename)
+
+    print(decoded_token)
     
-    document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename,reqUserId=decoded_token['unique_id'])
+    cursor.execute('''SELECT id FROM usuario
+                      WHERE nome = %s AND role = %s''', (decoded_token['user_id'], decoded_token['user_type']))
+    user_id = cursor.fetchone()[0]
+    document = documentSerivce.createNewDocument(secretKey=app.config['SECRET_KEY'],token=token,meetingId=reunion_id,title=agenda_title,path=filename,reqUserId=user_id)
     document_id = documentSerivce.insertDB(document=document,conn=conn)
-    cursor.execute('''SELECT titulo FROM reuniao
-                      WHERE id = %s''', (reunion_id))
+    cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (reunion_id,))
     reunion_title = cursor.fetchone()[0]
     cursor.close()
     conn.close()
@@ -144,6 +148,21 @@ def removeAgenda():
     to_return =ds.deleteDocumentDB(conn=conn,token=token,secretKey=app.config["SECRET_KEY"],document=document,uploadFolder=UPLOAD_FOLDER)
 
     return jsonify(to_return)
+
+@app.route('/remove_meeting', methods=['POST'])
+def removeMeeting():
+    conn = get_db_connection()
+    data = request.get_json()
+    # extracting data from token
+    token = data['token']
+    decoded_token = jwt.decode(
+        token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    reuniao_id = data['meeting_id']
+
+    ds = documentSerivce()
+    returnstatus = ds.removeMeeting(reuniao_id, UPLOAD_FOLDER, conn)
+
+    return jsonify(returnstatus)
 
 @app.route('/agenda', methods=['GET'])
 def getAllAgendas():

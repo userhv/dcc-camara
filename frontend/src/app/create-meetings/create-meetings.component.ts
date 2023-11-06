@@ -29,7 +29,8 @@ export class CreateMeetingsComponent {
 
     this.createMeetingService.createMeeting(title, formatedDate, token).subscribe(
       (response:any) => {
-        window.location.href = '/meeting/' + response.id_reuniao
+        console.log(response)
+        window.location.href = '/meeting/' + response.id_reuniao.id_reuniao
         // navigate altera a URL, mas não carrega a página ao menos que dê reload
       },
       (error) => {

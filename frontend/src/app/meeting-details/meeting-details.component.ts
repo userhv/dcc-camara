@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiserviceFetch } from '../home-agenda/home-agenda.component.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Meeting } from '../../meeting/meeting';
 import { DomSanitizer } from '@angular/platform-browser'; // Importe o DomSanitizer
 import { GetAgendaService } from './meeting-details.component.service';
@@ -30,7 +30,7 @@ export class MeetingDetailsComponent {
     private getAgendaService: GetAgendaService,
     private jwtHelper: JwtHelperService,
     private router: ActivatedRoute,
-    private route: ActivatedRoute,
+    private router_: Router,
     private sanitizer: DomSanitizer // Injete o DomSanitizer
   ) {
     this.currentDate = new Date();
@@ -86,11 +86,11 @@ export class MeetingDetailsComponent {
           const blob = new Blob([response], { type: 'application/pdf' });
           const url = URL.createObjectURL(blob);
           console.log(url)
-          window.open(url, '_blank');
+          window.open(url);
         },
         error: (error: any) => {
           console.log(error.url)
-          window.open(error.url, '_blank');
+          window.open(error.url);
         }
       });
   }
@@ -125,13 +125,13 @@ export class MeetingDetailsComponent {
       });
   }
 
-  removeAgenda(agenda: any, reload = true){
+  removeAgenda(agenda: any, reload = true) {
     const token = localStorage.getItem('access_token') || "";
     const agendaTitle = agenda[0]
     const reuniao_id = agenda[1]
 
     this.getAgendaService.removeAgenda(agendaTitle, reuniao_id, token).subscribe(
-      (response:any) => {
+      (response: any) => {
         console.log(response)
         if (reload) window.location.reload();
       },
@@ -143,7 +143,7 @@ export class MeetingDetailsComponent {
 
   newAgenda() {
     const token = localStorage.getItem('access_token') || '';
-    const id = this.route.snapshot.params['id'];
+    const id = this.router.snapshot.params['id'];
 
     if (this.selectedFiles && this.selectedFiles.length > 0) {
       const file = this.selectedFiles.item(0) as File;
@@ -168,5 +168,20 @@ export class MeetingDetailsComponent {
   editAgenda(agenda: any) {
     this.newAgenda()
     this.removeAgenda(agenda, false)
+  }
+
+  removeMeeting(meeting_id: number) {
+    const token = localStorage.getItem('access_token') || '';
+    this.getAgendaService.removeMeeting(meeting_id, token).subscribe(
+      (response: any) => {
+        console.log('Reunião removida com sucesso:', response);
+        window.location.href = '/home/'
+        // Faça qualquer ação adicional após a remoção da reunião
+      },
+      (error: any) => {
+        console.error('Erro ao remover a reunião:', error);
+        window.location.href = '/home/'
+        // Lide com erros de acordo com seus requisitos
+      })
   }
 }

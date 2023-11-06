@@ -21,7 +21,11 @@ class documentRepository():
         pass
 
     @abstractmethod
-    def getFolder(reunion_title:str, agenda_title:str, reuniao_id:str , agenda_id:str,upload_folder:str)->str:
+    def getFileFolder(reunion_title:str, agenda_title:str, reuniao_id:str , agenda_id:str,upload_folder:str)->str:
+        pass
+    
+    @abstractmethod
+    def getBaseFolder(reunion_title:str, reunion_id:str)->str:
         pass
 
     @abstractmethod
@@ -33,8 +37,21 @@ class documentRepository():
         pass
 
     @abstractmethod
-    def removeAgendaFiles(self,reunion_title:str, agenda_title:str, reuniao_id:str, agenda_id:str,upload_folder:str)->None:
+    def removeAgendaFiles(self,reunion_title:str, agenda_title:str,
+                    reuniao_id:str, agenda_id:str,upload_folder:str)->None:
         pass
+
+    @abstractmethod
+    def getDocuments(self,title:str,document:str,conn,reunion_id:int,upload_folder:str)->str:
+        pass
+
+    @abstractmethod
+    def removeMeetingFolder(self, reuniontitles:str,agenda_titles:[],
+                            reunion_id:int, agenda_ids:[])->None:
+        pass
+
+    def removeMeeting(self, reunion_id:int,upload_folder:str, conn)->None:
+        pass 
     
     @abstractmethod
     def deleteDocument(self,conn,token:str,secretKey:str,document:Document,uploadFolder:str):

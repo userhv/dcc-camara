@@ -39,9 +39,6 @@ class meetingSerivce(meetingRepository):
         cursor.execute('INSERT INTO reuniao (titulo, date_added)'
                         'VALUES (%s, %s) RETURNING id',
                         (meeting.title, meeting.date))
-        conn.commit()
         meeting_id = cursor.fetchone()[0]
+        conn.commit()
         return {"id_reuniao": meeting_id}
-   
-
-    

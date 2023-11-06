@@ -24,16 +24,14 @@ class documentSerivce(documentRepository):
             # create document not aproved yet
             document = documentFactory(title=title,meetingId=meetingId,approved=False,path=path,reqUserId=reqUserId, comment = comment)
         return document
-       
-    def getDocuments(self,title:str,document:str,conn,reunion_id:str,upload_folder:str)->str:
 
-        title = unidecode.unidecode(title)
-        document = unidecode.unidecode(document)
+
+    def getDocuments(self,title:str,document:str,conn,reunion_id:int,upload_folder:str)->str:
+        print(title, reunion_id)
         cursor = conn.cursor()
         cursor.execute('''SELECT titulo FROM reuniao
-                        WHERE id = %s''', (reunion_id))
-        reunion_title = cursor.fetchall()[0][0]
-        reunion_title = unidecode.unidecode(reunion_title)
+                        WHERE id = %s''', (reunion_id,))
+        reunion_title = cursor.fetchone()[0]
         cursor.execute(
             'SELECT id, titulo FROM pauta WHERE reuniao_id = %s AND documento = %s', (reunion_id, document))
         data = cursor.fetchall()
@@ -48,9 +46,10 @@ class documentSerivce(documentRepository):
             
         else:
             return 'Agenda não encontrada', 404
-    
+
+
     #inserts document object in db
-    def insertDB(document: Document,conn) -> str:
+    def insertDB(document: Document,conn)->str:
          
         cursor = conn.cursor()
         cursor.execute('INSERT INTO pauta (titulo,reuniao_id ,usuario_id, documento, aprovado)'
@@ -82,10 +81,13 @@ class documentSerivce(documentRepository):
     def allowed_file(filename,allowedExtensions):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedExtensions
 
-    def getFolder(self,reunion_title, agenda_title, reuniao_id, agenda_id,document,upload_folder):
-        print(agenda_id)
-        folder = reunion_title.replace("REUNIÃO DE", "").replace(
-            "/", "-") + '_' + str(reuniao_id)
+    def getBaseFolder(self, reunion_title, reunion_id):
+        folder = reunion_title.replace("REUNIÃO DE ", "").replace(
+            "/", "-") + '_' + str(reunion_id)
+        return folder
+
+    def getFileFolder(self,reunion_title, agenda_title, reuniao_id, agenda_id,document,upload_folder):
+        folder = self.getBaseFolder(reunion_title, reuniao_id)
         folder = folder + '/' + \
             agenda_title.replace(' ', '_').lower() + "_" + str(agenda_id)
         folder = unidecode.unidecode(folder)
@@ -96,7 +98,7 @@ class documentSerivce(documentRepository):
     def getFile(self,reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder):
 
         
-        path = self.getFolder(reunion_title, agenda_title, reuniao_id,
+        path = self.getFileFolder(reunion_title, agenda_title, reuniao_id,
                  agenda_id,document,upload_folder).replace("REUNIAODE", "")
 
         return os.path.join(path, document)
@@ -104,7 +106,7 @@ class documentSerivce(documentRepository):
 
     def uploadAgenda(self,reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder):
       
-        path = self.getFolder(reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder)
+        path = self.getFileFolder(reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder)
     
         if not os.path.exists(path):
             os.makedirs(path)
@@ -113,15 +115,50 @@ class documentSerivce(documentRepository):
     
         document.save(file_path)  # Use a função 'save' no objeto do arquivo
 
-
     def removeAgendaFiles(self,reunion_title, agenda_title, reuniao_id, agenda_id,upload_folder,document=''):
-        path = self.getFolder(reunion_title, agenda_title, reuniao_id, agenda_id,document,upload_folder)
+        path = self.getFileFolder(reunion_title, agenda_title, reuniao_id, agenda_id,document,upload_folder)
         for root, dirs, files in os.walk(path, topdown=False):
             for name in files:
                 os.remove(os.path.join(root, name))
             for name in dirs:
                 os.rmdir(os.path.join(root, name))
+        
         os.rmdir(path)
+
+    def removeMeeting(self, reunion_id, upload_folder, conn):
+        ds = documentSerivce()
+        cursor = conn.cursor()
+        #Fetching Reunion Parms
+        cursor.execute("""SELECT titulo FROM reuniao
+                          WHERE id = %s""", (reunion_id,))
+        reunion_title = cursor.fetchone()[0]
+        #Fetching Agenda Parms
+        cursor.execute("""SELECT titulo, id, documento FROM pauta
+                        WHERE reuniao_id = %s""",(reunion_id,))
+        data = cursor.fetchall()
+        
+        agenda_titles = []
+        agenda_ids = []
+        documentos = []
+
+        for i in range(len(data)):
+            agenda_titles.append(data[i][0])
+            agenda_ids.append(data[i][1])
+            documentos.append(data[i][2])
+
+        print(agenda_titles)
+        for i in range(len(agenda_titles)):
+            ds.removeAgendaFiles(reunion_title, agenda_titles[i], reunion_id, agenda_ids[i],
+                              upload_folder, documentos[i])
+
+
+        path = self.getBaseFolder(reunion_title, reunion_id)
+        os.rmdir(os.path.join(upload_folder, path))
+        cursor.execute("""DELETE FROM pauta WHERE reuniao_id = %s""",(reunion_id,))
+        conn.commit()
+        cursor.execute("""DELETE FROM reuniao WHERE id = %s""",(reunion_id,))
+        conn.commit()
+    
 
     def getAllAgenda(token:str, secret_key:str,conn):
         decoded_token = jwt.decode(
@@ -148,26 +185,28 @@ class documentSerivce(documentRepository):
         
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
+        
+        title = document.title
+        meeting_id = document.meetingId
      
 
         # only create meeting if an admin requests it
         if (decoded_token['user_type'] == "Chefia"):
             cursor.execute('''SELECT id FROM pauta
-                WHERE titulo = %s''', (document.title,))
+                WHERE titulo = %s''', (title,))
             agenda_id = cursor.fetchone()[0]
-            print(agenda_id)
           
             cursor.execute('''
                 DELETE FROM pauta
                 WHERE reuniao_id = %s AND titulo = %s
-                ''', (document.meetingId, document.title))
+                ''', (meeting_id, title))
 
             conn.commit()
 
             cursor.execute('''
                 SELECT titulo, id FROM reuniao
                 WHERE id = %s
-            ''', (document.meetingId,))
+            ''', (meeting_id,))
             data = cursor.fetchall()
 
             reunion_title = data[0][0]

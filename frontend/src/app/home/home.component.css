@@ -1,0 +1,10 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: max(20%, 320px);
+}
+
+.home-agenda {
+    width: 95%;
+}

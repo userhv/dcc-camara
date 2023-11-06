@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class GetAgendaService {
   private getAgendaURL = 'http://127.0.0.1:5000/get_agenda';
   private removeAgendaUrl = 'http://127.0.0.1:5000/remove_agenda';
+  private removeMeetingUrl = 'http://127.0.0.1:5000/remove_meeting';
   private newAgendaUrl = 'http://127.0.0.1:5000/new_agenda';
 
   private rejectAgendaUrl = 'http://127.0.0.1:5000/reject_agenda';
@@ -104,5 +105,13 @@ export class GetAgendaService {
     token: string
   ): Observable<any> {
     return this.http.post(this.approveAgendaUrl, { agendaId, token });
+  }
+
+  removeMeeting(
+    meeting_id: number,
+    token: string
+  ) : Observable<any> {
+    const data = {meeting_id, token}
+    return this.http.post(this.removeMeetingUrl, data);
   }
 }

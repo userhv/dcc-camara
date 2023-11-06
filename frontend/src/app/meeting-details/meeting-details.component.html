@@ -1,6 +1,9 @@
 <div class="agenda">
     <div ngbAccordion>
-        <h1>{{meeting[1]}}</h1>
+        <div class="meeting-header">
+            <h1>{{meeting[1]}}</h1>
+            <i class="bi bi-trash-fill" style="cursor: pointer;" (click)="removeMeeting(meeting[0])"></i>
+        </div>
         <hr class="dark-red">
         <div class="agenda-header mb-3">
             <h3>Adicionar pauta</h3>
