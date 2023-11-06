@@ -9,7 +9,7 @@ from Core.ports.meetingRepo import meetingRepository
 class meetingSerivce(meetingRepository):
     def getMeetingTitle(meetingId, conn) -> str:
         cursor = conn.cursor()
-        cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (meetingId))
+        cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (meetingId,))
         meetingTitle = cursor.fetchone()[0]
         conn.commit()
         return meetingTitle

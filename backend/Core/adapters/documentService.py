@@ -137,7 +137,8 @@ class documentSerivce(documentRepository):
             for name in dirs:
                 os.rmdir(os.path.join(root, name))
         
-        os.rmdir(path)
+        if(os.path.exists(path)):
+            os.rmdir(path)
 
     def removeMeeting(self, reunion_id, upload_folder, conn):
         ds = documentSerivce()
@@ -167,7 +168,9 @@ class documentSerivce(documentRepository):
 
 
         path = self.getBaseFolder(reunion_title, reunion_id)
-        os.rmdir(os.path.join(upload_folder, path))
+        reunion_folder = os.path.join(upload_folder, path)
+        if os.path.exists(reunion_folder):
+            os.rmdir(reunion_folder)
         cursor.execute("""DELETE FROM pauta WHERE reuniao_id = %s""",(reunion_id,))
         conn.commit()
         cursor.execute("""DELETE FROM reuniao WHERE id = %s""",(reunion_id,))
