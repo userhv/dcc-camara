@@ -7,6 +7,13 @@ import jwt
 from Core.ports.meetingRepo import meetingRepository
 
 class meetingSerivce(meetingRepository):
+    def getMeetingTitle(meetingId, conn) -> str:
+        cursor = conn.cursor()
+        cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (meetingId))
+        meetingTitle = cursor.fetchone()[0]
+        conn.commit()
+        return meetingTitle
+
     def getMeetingInfo(token:str,secretKey:str)->dict:
         conn = psycopg2.connect(host='localhost',
                             database='camara_db',
