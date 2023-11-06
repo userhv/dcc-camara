@@ -168,7 +168,7 @@ class documentSerivce(documentRepository):
         cursor=conn.cursor()
 
         # Consulta SQL para obter os dados da agenda do usuário
-        cursor.execute(''' SELECT titulo, reuniao_id, documento, aprovado, comentario, id FROM pauta ''')
+        cursor.execute(''' SELECT titulo, reuniao_id, documento, aprovado, comentario, pauta.id, nome, pauta.date_added FROM pauta INNER JOIN usuario ON pauta.usuario_id = usuario.id;''')
 
         data = cursor.fetchall()
         

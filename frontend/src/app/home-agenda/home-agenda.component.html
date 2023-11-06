@@ -20,7 +20,7 @@
                         <div *ngFor="let pendingAgenda of pendingAgendas">
                             <!-- Chefia -->
                             <div *ngIf="userType">
-                                <!-- const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = pendingAgenda -->
+                                <!-- const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id, nome, date_added] = pendingAgenda -->
                                 <ng-container *ngIf="meeting.id === pendingAgenda[1]">
                                     <div class="pendint-list py-3">
                                         <div class="row">
@@ -28,7 +28,7 @@
                                                 <div class="agenda-title">{{pendingAgenda[0]}}</div>
                                             </div>
                                             <div class="col-12 mb-3">
-                                                <div class="mb-2">Enviado por: Discente</div>
+                                                <div class="mb-2">Enviado por: {{pendingAgenda[6]}}<br>Data de envio: {{pendingAgenda[7]}}</div>
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <div class="mb-2">Documento:</div>
@@ -54,7 +54,7 @@
                             </div>
                             <!-- Discente -->
                             <div *ngIf="userType == false">
-                                <!-- const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id] = pendingAgenda -->
+                                <!-- const [titulo, reuniao_id, documento, aprovado, comentario, pauta_id, nome, date_added] = pendingAgenda -->
                                 <ng-container *ngIf="meeting.id === pendingAgenda[1]">
                                     <div class="pendint-list py-3">
                                         <div class="row">
