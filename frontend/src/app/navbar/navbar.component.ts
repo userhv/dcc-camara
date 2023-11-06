@@ -28,12 +28,12 @@ import { BrowserModule } from '@angular/platform-browser';
   <app-create-meetings class="nav-item button-nav" ></app-create-meetings>
 </ng-container>
 
-  <button class="nav-item button-nav" style="background: none; color: red;" routerLink="/login">
+
+</ul>
+  <button class="nav-item button-nav" style="background: none; color: red; font-size: 20px; margin-bottom: 10px;" routerLink="/login">
   <i class="bi bi-box-arrow-right"></i>
   Sair
   </button>
-  
-  </ul>
   </nav>
   </ng-container>
 
