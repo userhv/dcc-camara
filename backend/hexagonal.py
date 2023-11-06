@@ -67,7 +67,6 @@ def postNewMeeting():
     meeting= meetingSerivce.createNewMeeting(title=title,date=date,token=token,secretKey=app.config['SECRET_KEY'])
     meetingId =meetingSerivce.insertDB(meeting=meeting,conn=conn)
     
-    
     return jsonify({"id_reuniao": meetingId})
 
 @app.route('/get_agenda', methods=['GET'])
@@ -143,7 +142,7 @@ def removeAgenda():
     reuniao_id = data['reuniaoId']
     agenda_title = data['title']
 
-    ds =documentSerivce()
+    ds = documentSerivce()
     document = documentFactory(meetingId=reuniao_id,title=agenda_title,path="none",approved=False,reqUserId=decoded_token['user_id'])
     to_return =ds.deleteDocumentDB(conn=conn,token=token,secretKey=app.config["SECRET_KEY"],document=document,uploadFolder=UPLOAD_FOLDER)
 
@@ -202,9 +201,7 @@ def rejectAgenda():
     decoded_token = jwt.decode(
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
     agendaId = data['agendaId']
-    cursor =conn.cursor()
-    cursor.execute('DELETE FROM pauta WHERE id = %s', (agendaId, ))
-    conn.commit()
+    documentSerivce.removeAgenda(agendaId=agendaId, conn=conn)
     return jsonify({'AgendaId':agendaId})
 
 
@@ -217,9 +214,7 @@ def updateAgendaComment():
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
     agendaId = data['agendaId']
     agendaComment = data['agendaComment']
-    cursor =conn.cursor()
-    cursor.execute('UPDATE pauta SET comentario = %s WHERE id = %s', (agendaComment, agendaId))
-    conn.commit()
+    documentSerivce.updateAgendaComment(agendaId, agendaComment, conn)
     return jsonify({'AgendaId':agendaId})
 
 @app.route('/update_agenda_file', methods=['POST'])
@@ -232,21 +227,18 @@ def updateAgendaFile():
     token = data['token']
     decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
 
-    print(data)
     agenda_id = data["agendaId"]
     agenda_title = data["agendaTitle"]
     meeting_id = data["meetingId"]
     
     file = request.files['document']
     filename = secure_filename(file.filename)
-    print(filename)
 
     document = documentFactory(path=filename, id=agenda_id)
     document_id = documentSerivce.updateDocumentDBFile(document=document, conn=conn)
 
     cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (meeting_id))
     meeting_title = cursor.fetchone()[0]
-    print(meeting_title)
 
     cursor.close()
     conn.close()
@@ -264,9 +256,7 @@ def aproveAgenda():
     decoded_token = jwt.decode(
         token, app.config['SECRET_KEY'], algorithms=['HS256'])
     agendaId = data['agendaId']
-    cursor =conn.cursor()
-    cursor.execute('UPDATE pauta SET aprovado = %s WHERE id = %s', (True, agendaId))
-    conn.commit()
+    documentSerivce.approveAgenda(agendaId, conn)
     return jsonify({'AgendaId':agendaId,"Approved":True})
 
 if __name__ == '__main__':

@@ -103,6 +103,15 @@ class documentSerivce(documentRepository):
 
         return os.path.join(path, document)
 
+    def updateAgendaComment(agendaId, comment, conn):
+        cursor =conn.cursor()
+        cursor.execute('UPDATE pauta SET comentario = %s WHERE id = %s', (comment, agendaId))
+        conn.commit()
+
+    def approveAgenda(agendaId, conn):
+        cursor = conn.cursor()
+        cursor.execute('UPDATE pauta SET aprovado = %s WHERE id = %s', (True, agendaId))
+        conn.commit()
 
     def uploadAgenda(self,reunion_title, agenda_title, reuniao_id, agenda_id, document,upload_folder):
       
@@ -115,6 +124,11 @@ class documentSerivce(documentRepository):
     
         document.save(file_path)  # Use a função 'save' no objeto do arquivo
 
+    def removeAgenda(agendaId, conn):
+        cursor =conn.cursor()
+        cursor.execute('DELETE FROM pauta WHERE id = %s', (agendaId, ))
+        conn.commit()
+        
     def removeAgendaFiles(self,reunion_title, agenda_title, reuniao_id, agenda_id,upload_folder,document=''):
         path = self.getFileFolder(reunion_title, agenda_title, reuniao_id, agenda_id,document,upload_folder)
         for root, dirs, files in os.walk(path, topdown=False):
