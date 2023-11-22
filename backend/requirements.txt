@@ -8,3 +8,4 @@ marshmallow
 Werkzeug
 coverage
 PyJWT
+unidecode
