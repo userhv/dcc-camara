@@ -33,7 +33,7 @@ jobs:
         coverage run -m unittest
     - name: Get Coverage Report
       run: |
-        coverage report
+        coverage json
     - uses: actions/upload-artifact@v3
       with:
         name: backend-coverage
