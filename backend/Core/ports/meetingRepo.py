@@ -1,6 +1,6 @@
 import sys
-sys.path.insert(0,"..")
-from Core.models.meeting import *
+# sys.path.insert(0,"..")
+from backend.Core.models.meeting import *
 from abc import ABC, abstractmethod
 class meetingRepository():
 

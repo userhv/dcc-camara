@@ -1,10 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
 import sys
-sys.path.insert(0,"..")
 sys.path.insert(0,"../..")
 
-from adapters.meetingService import *  
+from backend.Core.adapters.meetingService import *  
 
 
 class TestMeetingService(unittest.TestCase):

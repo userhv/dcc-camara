@@ -1,13 +1,12 @@
 import sys
-from Core.models.document import *
+from backend.Core.models.document import *
 sys.path.insert(0,"..")
 sys.path.insert(0,".../../..")
 sys.path.insert(0,"../..")
-from Core.models.document import Document
-
+from backend.Core.models.document import Document
 import psycopg2
 import jwt
-from Core.ports.documentRepo import *
+from backend.Core.ports.documentRepo import *
 import os
 import unidecode
 from werkzeug.utils import secure_filename

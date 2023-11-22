@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0,"..")
-from Core.models.document import *
+from backend.Core.models.document import *
 from abc import ABC, abstractmethod
 class documentRepository():
 

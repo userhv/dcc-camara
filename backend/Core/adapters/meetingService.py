@@ -1,10 +1,10 @@
 import sys
 
-from Core.models.meeting import *
+from backend.Core.models.meeting import *
 sys.path.insert(0,"..")
 import psycopg2
 import jwt
-from Core.ports.meetingRepo import meetingRepository
+from backend.Core.ports.meetingRepo import meetingRepository
 
 class meetingSerivce(meetingRepository):
     def getMeetingTitle(meetingId, conn) -> str:

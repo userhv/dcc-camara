@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0,"..")
 sys.path.insert(0,"../..")
 import jwt
-from adapters.userService import *  
+from backend.Core.adapters.userService import *  
 
 class TestUserService(unittest.TestCase):
     def test_login_user_successful(self):

@@ -1,7 +1,7 @@
 import sys
-from Core.models.user import User
+from backend.Core.models.user import User
 sys.path.insert(0,"..")
-from Core.ports.userRepo import userRepository
+from backend.Core.ports.userRepo import userRepository
 import psycopg2
 import jwt
 

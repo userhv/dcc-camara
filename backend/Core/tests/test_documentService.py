@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0,"..")
 sys.path.insert(0,"../..")
 import jwt
-from adapters.documentService import *  
+from backend.Core.adapters.documentService import *  
 
 class TestdocumentService(unittest.TestCase):
     @patch("jwt.decode")
