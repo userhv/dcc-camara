@@ -1,4 +1,4 @@
-name: dcc camara
+name: dcc-camara
 
 on:
   push:
@@ -66,8 +66,11 @@ jobs:
   #       with:
   #         name: frontend-coverage
   #         path: client/coverage/coverage-final.json
+  #       env: 
+  #         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-    upload-to-codecov:
+
+  upload-to-codecov:
     needs: [backend-tests]
     runs-on: ubuntu-latest
     steps:
