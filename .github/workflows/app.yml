@@ -33,7 +33,7 @@ jobs:
         coverage run -m unittest
     - name: Get Coverage Report
       run: |
-        coverage json
+        coverage json --omit=/usr/* 
     - uses: actions/upload-artifact@v3
       with:
         name: backend-coverage
@@ -66,3 +66,14 @@ jobs:
   #       with:
   #         name: frontend-coverage
   #         path: client/coverage/coverage-final.json
+
+    upload-to-codecov:
+    needs: [backend-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v3
