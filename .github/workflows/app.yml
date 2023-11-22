@@ -31,9 +31,9 @@ jobs:
     - name: Run Tests on coverage
       run: |
         coverage run -m unittest
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v2
-      
+    - name: Get Coverage Report
+      run: |
+        coverage json
     - uses: actions/upload-artifact@v3
       with:
         name: backend-coverage
