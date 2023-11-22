@@ -1,7 +1,10 @@
 import sys
 from Core.models.document import *
-from backend.Core.models.document import Document
 sys.path.insert(0,"..")
+sys.path.insert(0,".../../..")
+sys.path.insert(0,"../..")
+from Core.models.document import Document
+
 import psycopg2
 import jwt
 from Core.ports.documentRepo import *

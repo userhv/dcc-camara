@@ -15,12 +15,8 @@ class userSerivce(userRepository):
         decoded_token = jwt.decode( token,secretKey, algorithms=['HS256'])
         return {'username':decoded_token['user_id'], 'role':decoded_token['user_type']}
 
-    def loginUser(userName:str,secretKey:str)-> dict:
-        conn =  psycopg2.connect(host='localhost',
-                            database='camara_db',
-                            user='admin',
-                            password='123456')
-
+    def loginUser(userName:str,secretKey:str,conn)-> dict:
+       
         cursor = conn.cursor()
         cursor.execute(
             "SELECT nome,role,id FROM usuario WHERE nome = %s", (userName,))

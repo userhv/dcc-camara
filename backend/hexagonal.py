@@ -29,11 +29,11 @@ def login():
 
     data = request.get_json()
     username = data.get('nome')
-    
+    conn = get_db_connection()
     if not username:
         return jsonify({'message': 'Username and password are required'}), 400
 
-    returnDict = userSerivce.loginUser(userName=username,secretKey=app.config['SECRET_KEY'])
+    returnDict = userSerivce.loginUser(userName=username,secretKey=app.config['SECRET_KEY'],conn=conn)
     
     return jsonify(returnDict)
 

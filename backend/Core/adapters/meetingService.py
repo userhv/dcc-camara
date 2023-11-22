@@ -11,6 +11,9 @@ class meetingSerivce(meetingRepository):
         cursor = conn.cursor()
         cursor.execute('''SELECT titulo FROM reuniao WHERE id = %s''', (meetingId,))
         meetingTitle = cursor.fetchone()[0]
+        if meetingTitle==None:
+            return 'Meeting not Found'
+
         conn.commit()
         return meetingTitle
 
@@ -38,7 +41,7 @@ class meetingSerivce(meetingRepository):
             meeting = meetingFactory(title=title,date=date)
             return meeting
         else:
-            Exception
+            raise PermissionError("Only Chefia role allowed")
     
     def insertDB(meeting: Meeting,conn) -> str:
          
