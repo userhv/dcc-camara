@@ -7,4 +7,3 @@ Flask-Script
 marshmallow
 Werkzeug
 coverage
-pytest-mock
