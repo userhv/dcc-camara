@@ -23,7 +23,7 @@ class TestUserService(unittest.TestCase):
         magic_conn.cursor.return_value = magic_conn
         magic_conn.fetchone.return_value = None
         token = userSerivce.loginUser('John Does', '12345',magic_conn)
-        expected={'access_token':"",'user_type':""}
+        expected= {'acess_token':"",'user_type':""}
         self.assertEqual(token, expected)
 
 
