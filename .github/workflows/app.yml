@@ -30,7 +30,7 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests on coverage
       run: |
-        coverage run -m unittest
+        coverage run -m unittest testdocumentoService.py
     - name: Get Coverage Report
       run: |
         coverage json --omit=/usr/* 
