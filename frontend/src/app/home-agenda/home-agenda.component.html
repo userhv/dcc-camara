@@ -6,7 +6,7 @@
         <add-pending></add-pending>
         <div ngbAccordionItem *ngFor="let meeting of upcomingMeetings">
             <button ngbAccordionButton>
-                <h2>{{ meeting.title }}</h2>
+                <h2 class="meeting-title">{{ meeting.title }}</h2>
             </button>
             <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
@@ -89,7 +89,7 @@
                                                 <input class="form-control" type="file" id="request-agenda-files_{{pendingAgenda[5]}}" name="request-agenda-files" (change)="onFileSelected(pendingAgenda, $event)">
                                             </div>
                                             <div class="col-12 d-flex flex-row-reverse">
-                                                <button type="button" class="btn btn-danger" (click)="updatePendingFile(pendingAgenda)">Enviar</button>
+                                                <button type="button" class="btn btn-danger send-another-document" (click)="updatePendingFile(pendingAgenda)">Enviar</button>
                                             </div>
                                         </div>
                                     </div>  

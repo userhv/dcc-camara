@@ -1,5 +1,4 @@
 import sys
-from backend.Core.models.user import User
 sys.path.insert(0,"..")
 from backend.Core.ports.userRepo import userRepository
 import psycopg2

@@ -15,11 +15,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="newMeeting()">Cadastrar</button>
+                <button type="button" id="create-meetings-submit-button" class="btn btn-danger" data-bs-dismiss="modal" (click)="newMeeting()">Cadastrar</button>
             </div>
         </div>
     </div>
 </div>
-<button type="button" class="nav-item button-nav" data-bs-toggle="modal" data-bs-target="#create-meetings-modal">
+<button id="create-meetings-modal-button" type="button" class="nav-item button-nav" data-bs-toggle="modal" data-bs-target="#create-meetings-modal">
     Cadastrar reunião
 </button>
