@@ -60,7 +60,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Generate Report
-        run: npm test -- --coverage 
+        run: npm cypress:run
 
       - uses: actions/upload-artifact@v3
         with:
