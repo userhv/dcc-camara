@@ -68,7 +68,7 @@ jobs:
 
 
   upload-to-codecov:
-    needs: [backend-tests, frontend-tests]
+    needs: [backend-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
