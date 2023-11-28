@@ -41,6 +41,7 @@ jobs:
 
 
   frontend-tests:
+
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
@@ -53,7 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
      - name: Run Cypress Test
-       uses: cypress-io/github-action@v5
+       uses: cypress-io/github-action@v4
        with:
          command: npx cypress run
          browser: chrome
