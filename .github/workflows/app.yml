@@ -53,13 +53,10 @@ jobs:
         working-directory: ./frontend
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
+        uses: actions/checkout@v3
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v5
         with:
-          build: npm run build
           start: npm start
       # - uses: actions/checkout@v3
       # - name: Set up Node ${{ matrix.node-version }}
