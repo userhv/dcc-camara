@@ -52,38 +52,23 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm install
       - name: Checkout
         uses: actions/checkout@v3
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           start: npm start
-      # - uses: actions/checkout@v3
-      # - name: Set up Node ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-      # - name: Install Dependencies
-      #   run: npm install
-      # - name: Cypress run
-      #   uses: cypress-io/github-action@v6
-      #   with:
-      #     build: npm run build
-      #     start: npm start
-      #     browser: chrome
-      # - name: Generate Report
-      #   run: npm cypress:run
-
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: frontend-coverage
-      #     path: client/coverage/coverage-final.json
-      #   env: 
-      #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 
   upload-to-codecov:
-    needs: [backend-tests]
+    needs: [backend-tests, frontend-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
