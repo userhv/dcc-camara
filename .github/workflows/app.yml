@@ -41,7 +41,6 @@ jobs:
 
 
   frontend-tests:
-
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
