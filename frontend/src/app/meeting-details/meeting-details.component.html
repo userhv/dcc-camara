@@ -2,7 +2,7 @@
     <div ngbAccordion>
         <div class="meeting-header">
             <h1>{{meeting[1]}}</h1>
-            <i class="bi bi-trash-fill" style="cursor: pointer;" (click)="removeMeeting(meeting[0])"></i>
+            <i class="bi bi-trash-fill delete-meeting" style="cursor: pointer;" (click)="removeMeeting(meeting[0])"></i>
         </div>
         <hr class="dark-red">
         <div class="agenda-header mb-3">
@@ -44,7 +44,7 @@
             <div class="list">
                 <p>{{ agenda[0] }}</p>
                 <div>
-                    <i class="bi bi-trash-fill" style="cursor: pointer;" (click)="removeAgenda(agenda)"></i>
+                    <i class="bi bi-trash-fill delete-agenda" style="cursor: pointer;" (click)="removeAgenda(agenda)"></i>
                     <i class="bi bi-pencil-fill" style="cursor: pointer;" (click)="editAgenda(agenda)"></i>
                     <i class="bi bi bi-download" style="cursor: pointer;" (click)="downloadPDF(agenda)"></i>
                     <i class="bi bi-eye-fill" style="cursor: pointer;" (click)="openPDF(agenda)"></i>
