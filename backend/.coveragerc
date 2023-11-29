@@ -1,0 +1,3 @@
+[run]
+source = ./Core
+omit = */Core/ports/*

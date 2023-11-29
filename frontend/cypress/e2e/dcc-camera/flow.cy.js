@@ -2,7 +2,7 @@
 
 describe('new meeting', () => {
     beforeEach(() => {
-      cy.exec('python ../backend/db/init_db.py')
+      cy.exec('python3 ../backend/db/init_db.py')
     })
   
     it('new meeting', () => {
@@ -75,7 +75,7 @@ describe('new meeting', () => {
       cy.contains('button', "Solicitar documentos").click()
       cy.get("#add-pending-modal").should('include.text', 'Adicionar pendência')
 
-      const pendingComment = "Me envie documento X"
+      const pendingComment = "Documento X"
       cy.get("#pending-comment").type(pendingComment)
       cy.get("#add-pending-submit-button").click()
 

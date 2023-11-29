@@ -46,7 +46,46 @@ class TestMeetingService(unittest.TestCase):
         raised_exception = context.exception
         self.assertEqual(str(raised_exception), "Only Chefia role allowed")
         
-       
+    @patch("jwt.decode")
+    @patch("psycopg2.connect")
+    def test_getMeetingInfo_success(self, mock_connect, mock_jwt_decode):
+        # Configuração do mock para jwt.decode
+        mock_jwt_decode.return_value = {"user_id": 1}
+
+        # Configuração do mock para psycopg2.connect
+        mock_conn = mock_connect.return_value
+        mock_cursor = mock_conn.cursor.return_value
+        mock_cursor.fetchall.return_value = [(1, "Title 1", "2023-01-01")]
+
+        # Configuração do token e chave secreta (não são usados, mas são necessários)
+        token = "any_token"
+        secret_key = "any_secret"
+
+        # Execução da função a ser testada
+        result = meetingSerivce.getMeetingInfo(token, secret_key)
+
+        # Verificação dos resultados esperados
+        expected_result = {'data': [(1, "Title 1", "2023-01-01")]}
+        self.assertEqual(result, expected_result)
+
+    @patch("psycopg2.connect")
+    def test_insertDB_success(self, mock_connect):
+        # Configuração do mock para psycopg2.connect
+        mock_conn = mock_connect.return_value
+        mock_cursor = mock_conn.cursor.return_value
+        mock_cursor.fetchone.return_value = [1]
+
+        # Criação de um objeto Meeting fictício
+        meeting = MagicMock()
+        meeting.title = "Title 1"
+        meeting.date = "2023-01-01"
+
+        # Execução da função a ser testada
+        result = meetingSerivce.insertDB(meeting, mock_conn)
+
+        # Verificação dos resultados esperados
+        expected_result = {"id_reuniao": 1}
+        self.assertEqual(result, expected_result)
        
 
       

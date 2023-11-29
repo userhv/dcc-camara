@@ -12,9 +12,6 @@ import unidecode
 from werkzeug.utils import secure_filename
 class documentSerivce(documentRepository):
      
-    def approveDocument(userName:str)->None:
-        pass
-  
     def createNewDocument(secretKey:str,token:str,meetingId:str,title: str,path:str,reqUserId:str, comment:str = "")->Document:
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
@@ -37,10 +34,10 @@ class documentSerivce(documentRepository):
         cursor.execute(
             'SELECT id, titulo FROM pauta WHERE reuniao_id = %s AND documento = %s', (reunion_id, document))
         data = cursor.fetchall()
-        agenda_id = data[0][0]
-        agenda_title = data[0][1]
        
         if data:
+            agenda_id = data[0][0]
+            agenda_title = data[0][1]
             
             filename = self.getFile(reunion_title, agenda_title,
                             reunion_id, agenda_id,document=document, upload_folder=upload_folder)            
@@ -163,7 +160,6 @@ class documentSerivce(documentRepository):
             agenda_ids.append(data[i][1])
             documentos.append(data[i][2])
 
-        print(agenda_titles)
         for i in range(len(agenda_titles)):
             ds.removeAgendaFiles(reunion_title, agenda_titles[i], reunion_id, agenda_ids[i],
                               upload_folder, documentos[i])
@@ -196,18 +192,14 @@ class documentSerivce(documentRepository):
         return to_return
     
     def deleteDocumentDB(self,conn,token:str,secretKey:str,document:Document,uploadFolder:str):
-         
         cursor = conn.cursor()
       
         # extracting data from token
-        
-        
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
         
         title = document.title
         meeting_id = document.meetingId
-     
 
         # only create meeting if an admin requests it
         if (decoded_token['user_type'] == "Chefia"):
@@ -237,19 +229,15 @@ class documentSerivce(documentRepository):
             return {"reunion_id": document.meetingId}
     
     def approveDocument(token:str,secretKey:str,document:Document)->str:
-          
         decoded_token = jwt.decode(
             token, secretKey, algorithms=['HS256'])
      
         if (decoded_token['user_type'] == "Chefia"):
             document.approved=True
 
-    def getDocumentById(documentId: str,conn) -> Document:
+    def getDocumentById(self, documentId: str,conn) -> Document:
         cursor= conn.cursor()
-        cursor.execute('''
-                SELECT * FROM pauta
-                WHERE id = %s
-            ''', (documentId,))
+        cursor.execute('''SELECT * FROM pauta WHERE id = %s''', (documentId,))
         
         
 

@@ -26,7 +26,28 @@ class TestUserService(unittest.TestCase):
         expected= {'acess_token':"",'user_type':""}
         self.assertEqual(token, expected)
 
+    @patch("jwt.decode")
+    def test_getUserId_success(self, mock_jwt_decode):
+        # Configuração do mock para jwt.decode
+        mock_jwt_decode.return_value = {"unique_id": 1}
+
+        # Execução da função a ser testada
+        result = userSerivce.getUserId("any_token", "any_secret")
+
+        # Verificação dos resultados esperados
+        expected_result = 1
+        self.assertEqual(result, expected_result)
+
+    @patch("jwt.decode")
+    def test_getUserInfo_success(self, mock_jwt_decode):
+        # Configuração do mock para jwt.decode
+        mock_jwt_decode.return_value = {"user_id": "John Doe", "user_type": "Chefia"}
+
+        # Execução da função a ser testada
+        result = userSerivce.getUserInfo("any_token", "any_secret")
+
+        # Verificação dos resultados esperados
+        expected_result = {'username': 'John Doe', 'role': 'Chefia'}
+        self.assertEqual(result, expected_result)
 
 
-if __name__ == '__main__':
-    unittest.main()
