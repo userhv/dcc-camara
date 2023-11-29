@@ -53,7 +53,9 @@ class TestdocumentService(unittest.TestCase):
         document = "Test "
         documentSerivceInst =documentSerivce()
         fileName=documentSerivceInst.getFile(reunion_title=reunion_title, agenda_title=agenda_title, reuniao_id=reuniao_id, agenda_id=agenda_id, document=document,upload_folder=upload_folder)
-        expected = 'upload/path/TestTitle_1/document_2/Test '
+        expected = upload_folder+"/"+reunion_title+"_"+reuniao_id+"/"+agenda_title+"_"+agenda_id+"/"+document
+        _filaName = fileName.replace("\\","/")
+        
         self.assertEqual(fileName,expected)
 
     @patch("jwt.decode")
